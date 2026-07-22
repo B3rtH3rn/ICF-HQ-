@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { apps } from "@/config/apps";
 import ThemeToggle from "./ThemeToggle";
+import { useMockUser, logoutMock } from "@/lib/mockAuth";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -14,6 +15,7 @@ const NAV = [
 
 export default function Header() {
   const pathname = usePathname();
+  const user = useMockUser();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -148,6 +150,47 @@ export default function Header() {
             );
           })}
         </nav>
+
+        {/* Auth (mock) */}
+        {user ? (
+          <div className="flex flex-shrink-0 items-center gap-1">
+            <Link
+              href="/dashboard"
+              className="rounded-full bg-accent2/15 px-3 py-1.5 text-sm font-semibold text-accent2 transition-colors hover:bg-accent2/25"
+            >
+              Hi, {user.name}
+            </Link>
+            <button
+              type="button"
+              onClick={() => logoutMock()}
+              aria-label="Sign out"
+              title="Sign out"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline text-muted transition-colors hover:text-ink"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <path d="M16 17l5-5-5-5M21 12H9" />
+              </svg>
+            </button>
+          </div>
+        ) : (
+          <Link
+            href="/login"
+            className="flex-shrink-0 rounded-full bg-accent2 px-4 py-1.5 text-sm font-semibold text-white shadow-soft transition-transform hover:-translate-y-0.5"
+          >
+            Sign in
+          </Link>
+        )}
       </div>
     </header>
   );

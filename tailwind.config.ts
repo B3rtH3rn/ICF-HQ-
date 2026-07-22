@@ -52,6 +52,8 @@ const config: Config = {
         "float-slow": "float 13s ease-in-out infinite",
         gradient: "gradient 6s ease infinite",
         "pulse-glow": "pulseGlow 4s ease-in-out infinite",
+        "spin-slow": "spin 26s linear infinite",
+        "spin-slower": "spin 40s linear infinite reverse",
       },
     },
   },
