@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Mood Tracker</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f0f9f6;
+      color: #295c50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      margin: 0;
+    }
+    h1 { color: #295c50; }
+    .moods { display: flex; gap: 0.75rem; margin: 1.5rem 0; }
+    .moods button {
+      font-size: 2rem;
+      border: 2px solid transparent;
+      background: white;
+      border-radius: 12px;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+    }
+    .moods button.selected { border-color: #3f8f79; }
+    #log { max-width: 400px; width: 100%; }
+    .entry {
+      background: white;
+      border-radius: 10px;
+      padding: 0.6rem 0.9rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .entry span.time { color: #6b8880; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <h1>🌤️ Daily Mood Tracker</h1>
+  <p>How are you feeling right now?</p>
+  <div class="moods">
+    <button data-mood="😀">😀</button>
+    <button data-mood="🙂">🙂</button>
+    <button data-mood="😐">😐</button>
+    <button data-mood="😔">😔</button>
+    <button data-mood="😢">😢</button>
+  </div>
+  <div id="log"></div>
+
+  <script>
+    const log = document.getElementById("log");
+    const buttons = document.querySelectorAll(".moods button");
+    const STORAGE_KEY = "mood-tracker-entries";
+    const entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        buttons.forEach((b) => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        entries.unshift({ mood: btn.dataset.mood, time: new Date().toLocaleTimeString() });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries.slice(0, 20)));
+        render();
+      });
+    });
+
+    function render() {
+      log.innerHTML = entries
+        .map(
+          (e) =>
+            `<div class="entry"><span>${e.mood}</span><span class="time">${e.time}</span></div>`
+        )
+        .join("");
+    }
+
+    render();
+  </script>
+</body>
+</html>

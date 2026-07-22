@@ -1,0 +1,91 @@
+/**
+ * APP REGISTRY
+ * ------------
+ * This is the single source of truth for every app on the hub.
+ * To add a new app, add ONE new object to the `apps` array below — you never
+ * need to touch any page or routing code. See README.md for full step-by-step
+ * instructions written for non-developers.
+ */
+
+export type AppType = "embedded" | "external";
+
+export interface AppEntry {
+  /** Unique, URL-safe id. Lowercase letters, numbers, and hyphens only. */
+  id: string;
+  /** Display name shown on the card and app page. */
+  title: string;
+  /** One or two sentences describing what the app does. */
+  description: string;
+  /** Name of the student/team who built it. Optional. */
+  creatorName?: string;
+  /** Path to a thumbnail image under /public, e.g. "/apps/mood-tracker/thumbnail.png". Optional — falls back to emoji. */
+  thumbnail?: string;
+  /** Emoji shown when no thumbnail is provided. */
+  emoji?: string;
+  /**
+   * "embedded"  -> the app's files live in /public/apps/<id>/ and are shown
+   *                inside the hub via an iframe at /apps/<id>.
+   * "external"  -> the app is hosted somewhere else; the card links out to
+   *                `url` in a new tab.
+   */
+  type: AppType;
+  /**
+   * For "embedded" apps: path to the app's entry HTML file under /public,
+   * e.g. "/apps/mood-tracker/index.html".
+   * For "external" apps: the full URL to the app, e.g. "https://my-app.vercel.app".
+   */
+  url: string;
+  /** Keywords used by the search/filter bar. */
+  tags: string[];
+  /** ISO date string (YYYY-MM-DD) for when the app was added. */
+  dateAdded: string;
+}
+
+export const apps: AppEntry[] = [
+  {
+    id: "mood-tracker",
+    title: "Daily Mood Tracker",
+    description:
+      "A gentle daily check-in that lets you log how you're feeling with a tap and see your recent moods at a glance.",
+    creatorName: "Example Student",
+    emoji: "🌤️",
+    type: "embedded",
+    url: "/apps/mood-tracker/index.html",
+    tags: ["mood", "check-in", "self-care"],
+    dateAdded: "2026-06-01",
+  },
+  {
+    id: "calm-breathing",
+    title: "Calm Breathing Buddy",
+    description:
+      "A simple animated guide that walks you through a slow breathing exercise whenever you need a reset.",
+    creatorName: "Example Student",
+    emoji: "🫧",
+    type: "embedded",
+    url: "/apps/calm-breathing/index.html",
+    tags: ["breathing", "calm", "coping tools"],
+    dateAdded: "2026-06-08",
+  },
+  {
+    id: "resource-finder",
+    title: "Find Local Support",
+    description:
+      "Helps teens find nearby counselors, hotlines, and community resources — hosted on its own site.",
+    creatorName: "Example Student",
+    emoji: "📚",
+    type: "external",
+    url: "https://example.com/find-local-support",
+    tags: ["resources", "hotlines", "help"],
+    dateAdded: "2026-06-15",
+  },
+];
+
+export function getAppById(id: string): AppEntry | undefined {
+  return apps.find((app) => app.id === id);
+}
+
+export function getAllTags(): string[] {
+  const tagSet = new Set<string>();
+  apps.forEach((app) => app.tags.forEach((tag) => tagSet.add(tag)));
+  return Array.from(tagSet).sort();
+}
