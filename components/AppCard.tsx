@@ -20,6 +20,7 @@ export default function AppCard({
   index?: number;
 }) {
   const isExternal = app.type === "external";
+  const comingSoon = !!app.comingSoon;
   const medallion = MEDALLION_THEMES[index % MEDALLION_THEMES.length];
 
   const content = (
@@ -48,12 +49,18 @@ export default function AppCard({
 
         <span
           className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${
-            isExternal
-              ? "bg-accent2/15 text-accent2"
-              : "bg-bg2 text-muted"
+            comingSoon
+              ? "bg-bg2 text-muted"
+              : isExternal
+                ? "bg-accent2/15 text-accent2"
+                : "bg-bg2 text-muted"
           }`}
         >
-          {isExternal ? "External site" : "In the hub"}
+          {comingSoon
+            ? "Coming soon"
+            : isExternal
+              ? "External site"
+              : "In the hub"}
         </span>
       </div>
 
@@ -78,14 +85,22 @@ export default function AppCard({
         ))}
       </div>
 
-      <div className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-accent">
-        {isExternal ? "Open in new tab" : "Open app"}
-        <span className="transition-transform duration-300 group-hover:translate-x-1">
-          →
-        </span>
-      </div>
+      {comingSoon ? (
+        <div className="mt-1 text-sm font-semibold text-muted">Coming soon</div>
+      ) : (
+        <div className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-accent">
+          {isExternal ? "Open in new tab" : "Open app"}
+          <span className="transition-transform duration-300 group-hover:translate-x-1">
+            →
+          </span>
+        </div>
+      )}
     </div>
   );
+
+  if (comingSoon) {
+    return <div className="block h-full opacity-80">{content}</div>;
+  }
 
   if (isExternal) {
     return (

@@ -83,13 +83,29 @@ export default function Header() {
                     <>
                       <span className="text-lg">{app.emoji ?? "💙"}</span>
                       <span className="flex-1 truncate">{app.title}</span>
-                      {app.type === "external" && (
-                        <span className="text-xs text-accent">↗</span>
+                      {app.comingSoon ? (
+                        <span className="text-[10px] uppercase tracking-wider text-muted/70">
+                          soon
+                        </span>
+                      ) : (
+                        app.type === "external" && (
+                          <span className="text-xs text-accent">↗</span>
+                        )
                       )}
                     </>
                   );
                   const cls =
                     "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-bg2 hover:text-ink";
+                  if (app.comingSoon) {
+                    return (
+                      <div
+                        key={app.id}
+                        className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-muted/60"
+                      >
+                        {inner}
+                      </div>
+                    );
+                  }
                   return app.type === "external" ? (
                     <a
                       key={app.id}

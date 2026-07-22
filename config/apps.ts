@@ -44,6 +44,12 @@ export interface AppEntry {
   tags: string[];
   /** ISO date string (YYYY-MM-DD) for when the app was added. */
   dateAdded: string;
+  /**
+   * Optional. Set true for an app that's announced but not built yet. It shows
+   * on the hub with a "Coming soon" state and isn't clickable — `url` is
+   * ignored until you remove this flag.
+   */
+  comingSoon?: boolean;
 }
 
 export const apps: AppEntry[] = [
@@ -72,16 +78,28 @@ export const apps: AppEntry[] = [
     dateAdded: "2026-06-08",
   },
   {
-    id: "resource-finder",
-    title: "Find Local Support",
+    id: "summer-challenge",
+    title: "Summer Challenge",
     description:
-      "Helps teens find nearby counselors, hotlines, and community resources — hosted on its own site.",
-    creatorName: "Example Student",
-    emoji: "📚",
-    type: "external",
-    url: "https://example.com/find-local-support",
+      "A summer of small daily challenges to keep you growing, moving, and connected.",
+    emoji: "☀️",
+    type: "embedded",
+    url: "",
     tags: [],
-    dateAdded: "2026-06-15",
+    dateAdded: "2026-07-22",
+    comingSoon: true,
+  },
+  {
+    id: "college-process",
+    title: "College Process",
+    description:
+      "Step-by-step help navigating applications, deadlines, and everything college-bound.",
+    emoji: "🎓",
+    type: "embedded",
+    url: "",
+    tags: [],
+    dateAdded: "2026-07-22",
+    comingSoon: true,
   },
 ];
 

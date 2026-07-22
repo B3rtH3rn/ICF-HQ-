@@ -4,14 +4,14 @@ import { apps, getAppById } from "@/config/apps";
 
 export function generateStaticParams() {
   return apps
-    .filter((app) => app.type === "embedded")
+    .filter((app) => app.type === "embedded" && !app.comingSoon)
     .map((app) => ({ id: app.id }));
 }
 
 export default function AppPage({ params }: { params: { id: string } }) {
   const app = getAppById(params.id);
 
-  if (!app || app.type !== "embedded") {
+  if (!app || app.type !== "embedded" || app.comingSoon) {
     notFound();
   }
 
