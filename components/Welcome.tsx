@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Wordmark from "@/components/Wordmark";
 
 const WORDS = [
   "wellbeing",
@@ -72,12 +73,8 @@ export default function Welcome() {
           {greeting}
         </p>
 
-        <h1 className="mt-5 text-4xl font-extrabold uppercase leading-[1.05] tracking-tight sm:text-6xl">
-          <span className="animate-gradient bg-gradient-to-r from-accent2 via-accent to-glow bg-[length:200%_auto] bg-clip-text text-transparent">
-            Inspiring Children
-            <br />
-            Foundation
-          </span>
+        <h1 className="mt-5 text-4xl leading-[1.05] sm:text-6xl">
+          <Wordmark />
         </h1>
 
         <p className="mx-auto mt-6 max-w-xl text-lg text-muted">

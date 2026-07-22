@@ -58,6 +58,7 @@ const config: Config = {
         "pulse-glow": "pulseGlow 4s ease-in-out infinite",
         "spin-slow": "spin 26s linear infinite",
         "spin-slower": "spin 40s linear infinite reverse",
+        "spin-slow-reverse": "spin 26s linear infinite reverse",
         breathe: "breathe 6s ease-in-out infinite",
       },
     },

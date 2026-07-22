@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ParticleField from "@/components/ParticleField";
+import Wordmark from "@/components/Wordmark";
 import { loginMock } from "@/lib/mockAuth";
 
 export default function LoginPage() {
@@ -58,11 +59,8 @@ export default function LoginPage() {
         className="relative z-10 w-full max-w-md rounded-3xl border border-hairline bg-surface/70 p-8 shadow-glow backdrop-blur-xl sm:p-10"
       >
         <div className="text-center">
-          <Link
-            href="/"
-            className="inline-block bg-gradient-to-r from-accent2 via-accent to-glow bg-clip-text text-sm font-extrabold uppercase tracking-tight text-transparent"
-          >
-            Inspiring Children Foundation
+          <Link href="/" className="inline-block">
+            <Wordmark className="text-sm" />
           </Link>
           <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-ink">
             Welcome back

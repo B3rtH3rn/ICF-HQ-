@@ -1,15 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useMockUser } from "@/lib/mockAuth";
 import ParticleField from "@/components/ParticleField";
-import SilhouetteAvatar from "@/components/dashboard/SilhouetteAvatar";
+import ConfigurableAvatar from "@/components/dashboard/ConfigurableAvatar";
+import AvatarCustomizer from "@/components/dashboard/AvatarCustomizer";
 import AppBubble from "@/components/dashboard/AppBubble";
 import SidePanel from "@/components/dashboard/SidePanel";
 import { dashboardBubbles } from "@/lib/mockDashboard";
+import { defaultAvatarConfig, AvatarConfig } from "@/lib/avatarOptions";
 
 export default function DashboardPage() {
   const user = useMockUser();
+  // NOTE: local state only for now — not yet persisted to the (mock) profile.
+  const [config, setConfig] = useState<AvatarConfig>(defaultAvatarConfig);
+  const [customizing, setCustomizing] = useState(false);
 
   if (!user) {
     return (
@@ -52,13 +58,20 @@ export default function DashboardPage() {
         {/* rail + stage */}
         <div className="mt-6 flex flex-col-reverse gap-6 lg:flex-row lg:items-start lg:gap-8">
           <aside className="lg:w-72 lg:flex-shrink-0">
+            <button
+              type="button"
+              onClick={() => setCustomizing(true)}
+              className="mb-4 flex w-full items-center justify-center gap-2 rounded-2xl border border-hairline bg-surface/60 px-4 py-3 text-sm font-semibold text-ink backdrop-blur transition-colors hover:border-accent"
+            >
+              <span className="text-accent">✦</span> Personalize your figure
+            </button>
             <SidePanel />
           </aside>
 
           {/* the floating stage */}
           <div className="relative h-[500px] flex-1 sm:h-[560px]">
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <SilhouetteAvatar />
+              <ConfigurableAvatar config={config} />
             </div>
             {dashboardBubbles.map((b, i) => (
               <AppBubble key={b.id} bubble={b} delay={i * 0.7} />
@@ -75,6 +88,13 @@ export default function DashboardPage() {
           </Link>
         </div>
       </div>
+
+      <AvatarCustomizer
+        open={customizing}
+        onClose={() => setCustomizing(false)}
+        config={config}
+        setConfig={setConfig}
+      />
     </div>
   );
 }

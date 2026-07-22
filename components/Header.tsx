@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { apps } from "@/config/apps";
 import ThemeToggle from "./ThemeToggle";
+import Wordmark from "./Wordmark";
 import { useMockUser, logoutMock } from "@/lib/mockAuth";
 
 const NAV = [
@@ -134,11 +135,8 @@ export default function Header() {
         </div>
 
         {/* Wordmark */}
-        <Link
-          href="/"
-          className="min-w-0 flex-1 truncate bg-gradient-to-r from-accent2 via-accent to-glow bg-clip-text text-sm font-extrabold uppercase tracking-tight text-transparent sm:text-lg"
-        >
-          Inspiring Children Foundation
+        <Link href="/" className="min-w-0 flex-1 truncate">
+          <Wordmark className="text-sm sm:text-lg" />
         </Link>
 
         <ThemeToggle />
