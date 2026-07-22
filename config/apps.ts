@@ -56,7 +56,7 @@ export const apps: AppEntry[] = [
     emoji: "🌤️",
     type: "embedded",
     url: "/mini-apps/mood-tracker/",
-    tags: ["mood", "check-in", "self-care"],
+    tags: ["mood", "check-in"],
     dateAdded: "2026-06-01",
   },
   {
@@ -68,7 +68,7 @@ export const apps: AppEntry[] = [
     emoji: "🫧",
     type: "embedded",
     url: "/mini-apps/calm-breathing/",
-    tags: ["breathing", "calm", "coping tools"],
+    tags: ["breathing", "calm"],
     dateAdded: "2026-06-08",
   },
   {
@@ -80,7 +80,7 @@ export const apps: AppEntry[] = [
     emoji: "📚",
     type: "external",
     url: "https://example.com/find-local-support",
-    tags: ["resources", "hotlines", "help"],
+    tags: [],
     dateAdded: "2026-06-15",
   },
 ];

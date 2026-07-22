@@ -6,11 +6,11 @@ export default function Header() {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5">
           {/* Logo placeholder — swap for the foundation's real logo */}
-          <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-calm-300 to-calm-500 text-lg text-white shadow-soft">
+          <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-lilac-300 via-sun-400 to-calm-400 text-lg shadow-soft">
             💙
           </span>
-          <span className="text-lg font-semibold tracking-tight text-calm-700">
-            ICF Mini-Apps Hub
+          <span className="bg-gradient-to-r from-lilac-400 via-sun-500 to-calm-500 bg-clip-text text-base font-extrabold uppercase tracking-tight text-transparent sm:text-lg">
+            Inspiring Children Foundation
           </span>
         </Link>
         <nav className="flex items-center gap-1 text-sm font-medium text-calm-600">

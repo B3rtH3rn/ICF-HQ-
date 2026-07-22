@@ -18,62 +18,65 @@ export default function AppGrid({
     return apps.filter((app) => app.tags.includes(activeTag));
   }, [apps, activeTag]);
 
+  const tabs = [{ label: "All apps", value: null as string | null }].concat(
+    allTags.map((tag) => ({ label: tag, value: tag }))
+  );
+
   return (
-    <div>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h2 className="text-xl font-semibold text-calm-700">Explore the apps</h2>
-          <p className="mt-1 text-sm text-calm-500">
-            {filtered.length} {filtered.length === 1 ? "app" : "apps"}
+    <div className="flex flex-col gap-8 lg:flex-row lg:gap-10">
+      {/* Left sidebar tabs */}
+      <aside className="lg:w-56 lg:flex-shrink-0">
+        <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-calm-500">
+          Browse
+        </h2>
+        <nav className="flex flex-wrap gap-2 lg:flex-col lg:gap-1">
+          {tabs.map((tab) => {
+            const isActive = activeTag === tab.value;
+            return (
+              <button
+                key={tab.label}
+                onClick={() => setActiveTag(tab.value)}
+                aria-current={isActive ? "true" : undefined}
+                className={`rounded-xl px-4 py-2 text-left text-sm font-medium capitalize transition-colors lg:w-full ${
+                  isActive
+                    ? "bg-calm-500 text-white shadow-soft"
+                    : "text-calm-600 hover:bg-white/70 hover:text-calm-700"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </nav>
+      </aside>
+
+      {/* Right content */}
+      <div className="flex-1">
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold text-calm-700">
             {activeTag ? (
-              <>
-                {" "}
-                tagged <span className="font-medium text-calm-600">{activeTag}</span>
-              </>
+              <span className="capitalize">{activeTag}</span>
             ) : (
-              " to explore"
+              "Explore the apps"
             )}
+          </h3>
+          <p className="mt-1 text-sm text-calm-500">
+            {filtered.length} {filtered.length === 1 ? "app" : "apps"} to explore
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setActiveTag(null)}
-            className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
-              activeTag === null
-                ? "bg-calm-500 text-white shadow-soft"
-                : "border border-calm-100 bg-white/70 text-calm-600 hover:border-calm-300 hover:text-calm-700"
-            }`}
-          >
-            All
-          </button>
-          {allTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-              className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
-                activeTag === tag
-                  ? "bg-calm-500 text-white shadow-soft"
-                  : "border border-calm-100 bg-white/70 text-calm-600 hover:border-calm-300 hover:text-calm-700"
-              }`}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
+        {filtered.length === 0 ? (
+          <p className="mt-12 text-center text-calm-500">
+            No apps with this tag yet — try another one.
+          </p>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2">
+            {filtered.map((app, i) => (
+              <AppCard key={app.id} app={app} index={i} />
+            ))}
+          </div>
+        )}
       </div>
-
-      {filtered.length === 0 ? (
-        <p className="mt-12 text-center text-calm-500">
-          No apps with this tag yet — try another one.
-        </p>
-      ) : (
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((app, i) => (
-            <AppCard key={app.id} app={app} index={i} />
-          ))}
-        </div>
-      )}
     </div>
   );
 }

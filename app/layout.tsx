@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ICF Mini-Apps Hub",
+  title: "Inspiring Children Foundation",
   description:
     "A home for the apps and tools our youth developers are building to support mental health in our community.",
 };

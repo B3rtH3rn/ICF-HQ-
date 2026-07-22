@@ -5,8 +5,9 @@ export default function AboutPage() {
 
       <div className="mt-6 space-y-4 text-calm-600">
         <p>
-          The ICF Mini-Apps Hub is a home for the apps and websites built by
-          the young people in our foundation&apos;s program. Every app here
+          The Inspiring Children Foundation app hub is a home for the apps and
+          websites built by the young people in our foundation&apos;s program.
+          Every app here
           was designed and built by a student, as a way to explore
           technology while creating something that supports mental health
           and wellbeing in our community.
