@@ -17,16 +17,16 @@ export default function AppPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col">
-      <div className="flex items-center justify-between border-b border-calm-100 bg-white px-4 py-2.5 sm:px-6">
+      <div className="flex items-center justify-between border-b border-hairline bg-surface px-4 py-2.5 sm:px-6">
         <div>
-          <h1 className="text-sm font-semibold text-calm-700">{app.title}</h1>
+          <h1 className="text-sm font-semibold text-ink">{app.title}</h1>
           {app.creatorName && (
-            <p className="text-xs text-calm-500">by {app.creatorName}</p>
+            <p className="text-xs text-muted">by {app.creatorName}</p>
           )}
         </div>
         <Link
           href="/apps"
-          className="text-sm font-medium text-calm-600 hover:text-calm-500"
+          className="text-sm font-medium text-muted hover:text-ink"
         >
           ← Back to the apps
         </Link>

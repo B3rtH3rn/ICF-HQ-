@@ -51,40 +51,40 @@ export default function Welcome() {
     <section className="relative flex min-h-[calc(100vh-9rem)] items-center justify-center overflow-hidden px-4 py-16">
       {/* parallax shapes */}
       <div
-        className="pointer-events-none absolute -left-12 top-8 h-64 w-64 rounded-full bg-lilac-200/50 blur-3xl transition-transform duration-300 ease-out"
+        className="pointer-events-none absolute -left-12 top-8 h-64 w-64 rounded-full bg-accent2/25 blur-3xl transition-transform duration-300 ease-out"
         style={{ transform: `translate(${offset.x * 22}px, ${offset.y * 22}px)` }}
       />
       <div
-        className="pointer-events-none absolute -right-8 top-1/3 h-72 w-72 rounded-full bg-warmth-200/60 blur-3xl transition-transform duration-300 ease-out"
+        className="pointer-events-none absolute -right-8 top-1/3 h-72 w-72 rounded-full bg-glow/20 blur-3xl transition-transform duration-300 ease-out"
         style={{
           transform: `translate(${offset.x * -30}px, ${offset.y * -30}px)`,
         }}
       />
       <div
-        className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-calm-200/50 blur-3xl transition-transform duration-300 ease-out"
+        className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-accent/20 blur-3xl transition-transform duration-300 ease-out"
         style={{
           transform: `translate(${offset.x * 26}px, ${offset.y * -18}px)`,
         }}
       />
 
       <div className="relative z-10 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-calm-500">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
           {greeting}
         </p>
 
         <h1 className="mt-5 text-4xl font-extrabold uppercase leading-[1.05] tracking-tight sm:text-6xl">
-          <span className="animate-gradient bg-gradient-to-r from-lilac-400 via-sun-500 to-calm-500 bg-[length:200%_auto] bg-clip-text text-transparent">
+          <span className="animate-gradient bg-gradient-to-r from-accent2 via-accent to-glow bg-[length:200%_auto] bg-clip-text text-transparent">
             Inspiring Children
             <br />
             Foundation
           </span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-xl text-lg text-calm-600">
+        <p className="mx-auto mt-6 max-w-xl text-lg text-muted">
           A warm little home for the apps our interns build — to nurture{" "}
           <span
             key={wordIndex}
-            className="inline-block animate-fade-up font-semibold text-sun-500"
+            className="inline-block animate-fade-up font-semibold text-accent"
           >
             {WORDS[wordIndex]}
           </span>{" "}
@@ -94,7 +94,7 @@ export default function Welcome() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Link
             href="/apps"
-            className="group rounded-full bg-calm-500 px-7 py-3 text-base font-semibold text-white shadow-lift transition-transform hover:-translate-y-0.5 hover:bg-calm-600"
+            className="group rounded-full bg-accent2 px-7 py-3 text-base font-semibold text-white shadow-glow transition-transform hover:-translate-y-0.5 hover:brightness-110"
           >
             Explore the Apps{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1">
@@ -103,7 +103,7 @@ export default function Welcome() {
           </Link>
           <Link
             href="/about"
-            className="rounded-full border border-calm-200 bg-white/70 px-7 py-3 text-base font-semibold text-calm-600 backdrop-blur transition-colors hover:border-calm-300 hover:text-calm-700"
+            className="rounded-full border border-hairline bg-surface/60 px-7 py-3 text-base font-semibold text-ink backdrop-blur transition-colors hover:border-accent"
           >
             About us
           </Link>

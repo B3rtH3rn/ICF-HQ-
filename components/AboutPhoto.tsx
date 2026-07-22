@@ -32,10 +32,10 @@ export default function AboutPhoto({
         src={src}
         alt={alt}
         onError={() => setOk(false)}
-        className="w-full rounded-2xl border border-calm-100 shadow-soft"
+        className="w-full rounded-2xl border border-hairline shadow-soft"
       />
       {caption && (
-        <figcaption className="mt-2 text-center text-sm text-calm-500">
+        <figcaption className="mt-2 text-center text-sm text-muted">
           {caption}
         </figcaption>
       )}

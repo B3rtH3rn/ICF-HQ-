@@ -26,7 +26,7 @@ export default function AppGrid({
     <div className="flex flex-col gap-8 lg:flex-row lg:gap-10">
       {/* Left sidebar tabs */}
       <aside className="lg:w-56 lg:flex-shrink-0">
-        <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-calm-500">
+        <h2 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-muted">
           Browse
         </h2>
         <nav className="flex flex-wrap gap-2 lg:flex-col lg:gap-1">
@@ -39,8 +39,8 @@ export default function AppGrid({
                 aria-current={isActive ? "true" : undefined}
                 className={`rounded-xl px-4 py-2 text-left text-sm font-medium capitalize transition-colors lg:w-full ${
                   isActive
-                    ? "bg-calm-500 text-white shadow-soft"
-                    : "text-calm-600 hover:bg-white/70 hover:text-calm-700"
+                    ? "bg-accent2 text-white shadow-soft"
+                    : "text-muted hover:bg-surface hover:text-ink"
                 }`}
               >
                 {tab.label}
@@ -53,20 +53,20 @@ export default function AppGrid({
       {/* Right content */}
       <div className="flex-1">
         <div className="mb-6">
-          <h3 className="text-xl font-semibold text-calm-700">
+          <h3 className="text-xl font-semibold text-ink">
             {activeTag ? (
               <span className="capitalize">{activeTag}</span>
             ) : (
               "Explore the apps"
             )}
           </h3>
-          <p className="mt-1 text-sm text-calm-500">
+          <p className="mt-1 text-sm text-muted">
             {filtered.length} {filtered.length === 1 ? "app" : "apps"} to explore
           </p>
         </div>
 
         {filtered.length === 0 ? (
-          <p className="mt-12 text-center text-calm-500">
+          <p className="mt-12 text-center text-muted">
             No apps with this tag yet — try another one.
           </p>
         ) : (

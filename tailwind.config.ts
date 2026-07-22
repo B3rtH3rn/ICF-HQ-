@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
@@ -8,39 +9,24 @@ const config: Config = {
         sans: ["var(--font-poppins)", "system-ui", "sans-serif"],
       },
       colors: {
-        warmth: {
-          50: "#fff8f0",
-          100: "#fef0e0",
-          200: "#fbdcb8",
-          300: "#f7c78a",
-        },
-        calm: {
-          50: "#f0f9f6",
-          100: "#dcefe7",
-          200: "#b7dfd0",
-          300: "#8ecdb6",
-          400: "#5fb597",
-          500: "#3f8f79",
-          600: "#317263",
-          700: "#295c50",
-        },
-        lilac: {
-          100: "#efeafc",
-          200: "#ddd2f7",
-          300: "#c4b1ef",
-          400: "#a98ee4",
-        },
-        sun: {
-          400: "#f2a154",
-          500: "#e88a35",
-        },
+        // Semantic, theme-swappable tokens (see globals.css for the values).
+        bg: "rgb(var(--bg) / <alpha-value>)",
+        bg2: "rgb(var(--bg-2) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        hairline: "rgb(var(--border) / <alpha-value>)",
+        ink: "rgb(var(--text) / <alpha-value>)",
+        muted: "rgb(var(--muted) / <alpha-value>)",
+        accent: "rgb(var(--accent) / <alpha-value>)",
+        accent2: "rgb(var(--accent-2) / <alpha-value>)",
+        glow: "rgb(var(--glow) / <alpha-value>)",
       },
       borderRadius: {
         xl2: "1.25rem",
       },
       boxShadow: {
-        soft: "0 4px 20px rgba(41, 92, 80, 0.08)",
-        lift: "0 18px 40px -12px rgba(41, 92, 80, 0.28)",
+        soft: "0 4px 20px rgb(2 6 23 / 0.22)",
+        lift: "0 18px 40px -12px rgb(2 6 23 / 0.45)",
+        glow: "0 0 32px -4px rgb(var(--accent) / 0.45)",
       },
       keyframes: {
         "fade-up": {
@@ -55,12 +41,17 @@ const config: Config = {
           "0%, 100%": { backgroundPosition: "0% center" },
           "50%": { backgroundPosition: "100% center" },
         },
+        pulseGlow: {
+          "0%, 100%": { opacity: "0.55", transform: "scale(1)" },
+          "50%": { opacity: "1", transform: "scale(1.04)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out both",
         float: "float 9s ease-in-out infinite",
         "float-slow": "float 13s ease-in-out infinite",
         gradient: "gradient 6s ease infinite",
+        "pulse-glow": "pulseGlow 4s ease-in-out infinite",
       },
     },
   },

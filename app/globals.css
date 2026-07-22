@@ -2,20 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Color system — every color on the site comes from these CSS variables, so
+  the light/dark toggle is a single theme swap rather than two designs.
+  Values are space-separated RGB channels so Tailwind's alpha modifiers work
+  (e.g. bg-accent/20). Dark is the default experience; .dark holds its values.
+*/
+
+:root {
+  /* Light theme — calm, airy, blue-toned */
+  --bg: 236 242 251;
+  --bg-2: 224 235 249;
+  --surface: 255 255 255;
+  --border: 208 222 241;
+  --text: 22 36 64;
+  --muted: 90 108 138;
+  --accent: 13 146 166;
+  --accent-2: 42 106 202;
+  --glow: 44 176 203;
+}
+
+.dark {
+  /* Dark theme — moody, deep-blue sci-fi HUD */
+  --bg: 8 12 24;
+  --bg-2: 15 22 40;
+  --surface: 20 29 51;
+  --border: 34 47 76;
+  --text: 224 233 248;
+  --muted: 141 159 192;
+  --accent: 56 224 232;
+  --accent-2: 92 151 255;
+  --glow: 34 211 238;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  @apply bg-warmth-50 text-calm-700;
+  @apply bg-bg text-ink;
+  min-height: 100vh;
   background-image: radial-gradient(
-      42rem 42rem at 12% -8%,
-      rgba(143, 205, 182, 0.28),
+      44rem 44rem at 12% -8%,
+      rgb(var(--accent-2) / 0.16),
       transparent 60%
     ),
     radial-gradient(
-      38rem 38rem at 105% 8%,
-      rgba(196, 177, 239, 0.22),
+      40rem 40rem at 106% 4%,
+      rgb(var(--glow) / 0.13),
       transparent 55%
     );
   background-repeat: no-repeat;
