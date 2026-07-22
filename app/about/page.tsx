@@ -8,7 +8,6 @@ export default function AboutPage() {
       <AboutPhoto
         src="/images/about-team.jpg"
         alt="Inspiring Children Foundation interns and mentors together outdoors"
-        caption="Our interns and mentors out in the field."
       />
 
       <div className="mt-6 space-y-4 text-calm-600">

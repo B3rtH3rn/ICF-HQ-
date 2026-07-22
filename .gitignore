@@ -22,3 +22,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# local image backups (keep out of the repo)
+public/images/*.bak.jpg
