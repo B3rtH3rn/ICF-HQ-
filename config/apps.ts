@@ -18,21 +18,26 @@ export interface AppEntry {
   description: string;
   /** Name of the student/team who built it. Optional. */
   creatorName?: string;
-  /** Path to a thumbnail image under /public, e.g. "/apps/mood-tracker/thumbnail.png". Optional — falls back to emoji. */
+  /** Path to a thumbnail image under /public, e.g. "/mini-apps/mood-tracker/thumbnail.png". Optional — falls back to emoji. */
   thumbnail?: string;
   /** Emoji shown when no thumbnail is provided. */
   emoji?: string;
   /**
-   * "embedded"  -> the app's files live in /public/apps/<id>/ and are shown
+   * "embedded"  -> the app's files live in /public/mini-apps/<id>/ and are shown
    *                inside the hub via an iframe at /apps/<id>.
    * "external"  -> the app is hosted somewhere else; the card links out to
    *                `url` in a new tab.
+   *
+   * NOTE: embedded assets live under /public/mini-apps/ rather than /public/apps/
+   * on purpose — that keeps them from colliding with the /apps/<id> hub route
+   * itself, which some static hosts (e.g. Vercel) treat as a URL conflict.
    */
   type: AppType;
   /**
-   * For "embedded" apps: path to the app's entry HTML file under /public,
-   * e.g. "/apps/mood-tracker/index.html".
-   * For "external" apps: the full URL to the app, e.g. "https://my-app.vercel.app".
+   * For "embedded" apps: path to the app's folder under /public, with a
+   * trailing slash, e.g. "/mini-apps/mood-tracker/" (the folder must contain
+   * an index.html). For "external" apps: the full URL to the app, e.g.
+   * "https://my-app.vercel.app".
    */
   url: string;
   /** Keywords used by the search/filter bar. */
@@ -50,7 +55,7 @@ export const apps: AppEntry[] = [
     creatorName: "Example Student",
     emoji: "🌤️",
     type: "embedded",
-    url: "/apps/mood-tracker/index.html",
+    url: "/mini-apps/mood-tracker/",
     tags: ["mood", "check-in", "self-care"],
     dateAdded: "2026-06-01",
   },
@@ -62,7 +67,7 @@ export const apps: AppEntry[] = [
     creatorName: "Example Student",
     emoji: "🫧",
     type: "embedded",
-    url: "/apps/calm-breathing/index.html",
+    url: "/mini-apps/calm-breathing/",
     tags: ["breathing", "calm", "coping tools"],
     dateAdded: "2026-06-08",
   },

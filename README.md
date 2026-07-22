@@ -34,11 +34,15 @@ no page code, no routing, nothing.
 
 ### Step 2: If you chose "embedded", add your files
 
-1. Create a new folder inside [`public/apps/`](public/apps/) named after your
-   app, e.g. `public/apps/my-cool-app/`.
+1. Create a new folder inside [`public/mini-apps/`](public/mini-apps/) named
+   after your app, e.g. `public/mini-apps/my-cool-app/`.
 2. Put your app's files inside that folder. There must be a file named
    `index.html` — that's the page that will load first.
 3. That's it — your app's files are now part of the hub.
+
+   (Files live under `public/mini-apps/` rather than `public/apps/` on
+   purpose — that name is reserved for the hub's own `/apps/<id>` viewer
+   page, and reusing it causes a URL conflict on some hosts.)
 
 ### Step 3: Add an entry to the registry
 
@@ -53,7 +57,7 @@ inside the `apps` array, then fill in your own details:
   creatorName: "Your Name",        // optional
   emoji: "✨",                     // shown on the card if you don't have a thumbnail image
   type: "embedded",                // or "external"
-  url: "/apps/my-cool-app/index.html",  // for embedded — matches the folder from Step 2
+  url: "/mini-apps/my-cool-app/",  // for embedded — matches the folder from Step 2 (keep the trailing slash)
   // url: "https://my-app.vercel.app",  // use this style instead for "external"
   tags: ["fun", "coping tools"],
   dateAdded: "2026-07-21",
@@ -74,7 +78,7 @@ everything stays organized, but feel free to add a new one if nothing fits.
 app/                 pages (home, about, and the /apps/[id] viewer)
 components/          reusable UI pieces (header, footer, app cards, grid)
 config/apps.ts        <-- the app registry — the only file you need to edit
-public/apps/<id>/     embedded apps' files live here
+public/mini-apps/<id>/     embedded apps' files live here
 ```
 
 ## Deployment
