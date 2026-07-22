@@ -25,10 +25,10 @@ export default function AppPage({ params }: { params: { id: string } }) {
           )}
         </div>
         <Link
-          href="/"
+          href="/apps"
           className="text-sm font-medium text-calm-600 hover:text-calm-500"
         >
-          ← Back to hub
+          ← Back to the apps
         </Link>
       </div>
 

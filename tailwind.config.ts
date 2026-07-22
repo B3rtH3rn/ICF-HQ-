@@ -4,6 +4,9 @@ const config: Config = {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-poppins)", "system-ui", "sans-serif"],
+      },
       colors: {
         warmth: {
           50: "#fff8f0",
@@ -48,11 +51,16 @@ const config: Config = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-14px)" },
         },
+        gradient: {
+          "0%, 100%": { backgroundPosition: "0% center" },
+          "50%": { backgroundPosition: "100% center" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out both",
         float: "float 9s ease-in-out infinite",
         "float-slow": "float 13s ease-in-out infinite",
+        gradient: "gradient 6s ease infinite",
       },
     },
   },
