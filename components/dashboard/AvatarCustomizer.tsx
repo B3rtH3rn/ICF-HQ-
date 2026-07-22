@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ConfigurableAvatar from "./ConfigurableAvatar";
 import {
   AvatarConfig,
@@ -73,14 +73,22 @@ function Swatch({
 export default function AvatarCustomizer({
   open,
   onClose,
-  config,
-  setConfig,
+  initial,
+  onSave,
 }: {
   open: boolean;
   onClose: () => void;
-  config: AvatarConfig;
-  setConfig: (c: AvatarConfig) => void;
+  initial: AvatarConfig;
+  onSave: (c: AvatarConfig) => void;
 }) {
+  // Draft state: edits stay local until "Done". Closing without saving discards.
+  const [config, setConfig] = useState<AvatarConfig>(initial);
+
+  // Reset the draft to the saved config each time the panel opens.
+  useEffect(() => {
+    if (open) setConfig(initial);
+  }, [open, initial]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     if (open) document.addEventListener("keydown", onKey);
@@ -255,16 +263,23 @@ export default function AvatarCustomizer({
         </div>
 
         {/* footer */}
-        <div className="flex items-center justify-between border-t border-hairline px-5 py-3">
-          <p className="text-xs text-muted">
-            Preview only — saving your look comes next.
-          </p>
+        <div className="flex items-center justify-end gap-2 border-t border-hairline px-5 py-3">
           <button
             type="button"
             onClick={onClose}
+            className="rounded-xl border border-hairline px-5 py-2 text-sm font-semibold text-muted transition-colors hover:text-ink"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              onSave(config);
+              onClose();
+            }}
             className="rounded-xl bg-accent2 px-5 py-2 text-sm font-semibold text-white shadow-soft transition-transform hover:-translate-y-0.5"
           >
-            Done
+            Save
           </button>
         </div>
       </div>

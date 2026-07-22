@@ -233,7 +233,7 @@ export default function ConfigurableAvatar({
             strokeLinecap="round"
           >
             <circle cx="100" cy="44" r="32" />
-            <path d={POSE_PATHS[config.pose]} />
+            <path d={POSE_PATHS[config.pose] ?? POSE_PATHS.standing} />
           </g>
           <Hair hair={config.hair} color={hairColor} />
         </svg>

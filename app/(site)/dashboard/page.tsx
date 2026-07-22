@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useMockUser } from "@/lib/mockAuth";
+import { useMockUser, updateMockAvatar } from "@/lib/mockAuth";
 import ParticleField from "@/components/ParticleField";
 import ConfigurableAvatar from "@/components/dashboard/ConfigurableAvatar";
 import AvatarCustomizer from "@/components/dashboard/AvatarCustomizer";
@@ -13,9 +13,18 @@ import { defaultAvatarConfig, AvatarConfig } from "@/lib/avatarOptions";
 
 export default function DashboardPage() {
   const user = useMockUser();
-  // NOTE: local state only for now — not yet persisted to the (mock) profile.
   const [config, setConfig] = useState<AvatarConfig>(defaultAvatarConfig);
   const [customizing, setCustomizing] = useState(false);
+
+  // Load the saved avatar from the (mock) profile once the user resolves.
+  useEffect(() => {
+    if (user?.avatar) setConfig(user.avatar);
+  }, [user]);
+
+  const handleSave = (c: AvatarConfig) => {
+    setConfig(c);
+    updateMockAvatar(c);
+  };
 
   if (!user) {
     return (
@@ -92,8 +101,8 @@ export default function DashboardPage() {
       <AvatarCustomizer
         open={customizing}
         onClose={() => setCustomizing(false)}
-        config={config}
-        setConfig={setConfig}
+        initial={config}
+        onSave={handleSave}
       />
     </div>
   );

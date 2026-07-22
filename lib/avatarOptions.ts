@@ -10,7 +10,7 @@
  */
 
 export type EnergyStyle = "still" | "sparkles" | "trails" | "shards";
-export type PoseStyle = "standing" | "open" | "seated";
+export type PoseStyle = "standing" | "open";
 export type HairStyle = "none" | "short" | "long" | "tied";
 
 export type AvatarConfig = {
@@ -55,7 +55,6 @@ export const ENERGY_OPTIONS: { id: EnergyStyle; label: string }[] = [
 export const POSE_OPTIONS: { id: PoseStyle; label: string }[] = [
   { id: "standing", label: "Standing" },
   { id: "open", label: "Arms open" },
-  { id: "seated", label: "Seated" },
 ];
 
 export const HAIR_OPTIONS: { id: HairStyle; label: string }[] = [
@@ -82,6 +81,4 @@ export const POSE_PATHS: Record<PoseStyle, string> = {
   standing:
     "M86 100 L50 122 L36 236 L38 256 L52 252 L50 158 L70 168 L66 236 L70 358 L72 368 L90 368 L92 252 L100 242 L108 252 L110 368 L128 368 L130 358 L134 236 L130 168 L150 158 L148 252 L162 256 L164 236 L150 122 L114 100 Z",
   open: "M86 100 L48 118 L20 210 L18 232 L36 234 L58 150 L70 168 L66 236 L70 358 L72 368 L90 368 L92 252 L100 242 L108 252 L110 368 L128 368 L130 358 L134 236 L130 168 L142 150 L164 234 L182 232 L180 210 L152 118 L114 100 Z",
-  seated:
-    "M86 100 L50 122 L36 236 L38 256 L52 252 L50 158 L70 168 L66 240 L30 300 L30 320 L100 306 L170 320 L170 300 L134 240 L130 168 L150 158 L148 252 L162 256 L164 236 L150 122 L114 100 Z",
 };

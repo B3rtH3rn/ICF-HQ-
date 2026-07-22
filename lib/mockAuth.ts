@@ -9,9 +9,12 @@
  */
 
 import { useEffect, useState } from "react";
+import type { AvatarConfig } from "./avatarOptions";
 
 export type MockUser = {
   name: string;
+  /** The user's saved avatar customization (see avatarOptions). */
+  avatar?: AvatarConfig;
 };
 
 const KEY = "icf-mock-user";
@@ -37,6 +40,16 @@ export function loginMock(name = "Bert"): void {
 export function logoutMock(): void {
   try {
     localStorage.removeItem(KEY);
+    window.dispatchEvent(new Event(EVENT));
+  } catch {}
+}
+
+/** Persist the user's avatar customization onto their (mock) profile. */
+export function updateMockAvatar(avatar: AvatarConfig): void {
+  try {
+    const user = getMockUser();
+    if (!user) return;
+    localStorage.setItem(KEY, JSON.stringify({ ...user, avatar }));
     window.dispatchEvent(new Event(EVENT));
   } catch {}
 }
