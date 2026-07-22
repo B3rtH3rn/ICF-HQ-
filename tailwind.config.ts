@@ -45,6 +45,10 @@ const config: Config = {
           "0%, 100%": { opacity: "0.55", transform: "scale(1)" },
           "50%": { opacity: "1", transform: "scale(1.04)" },
         },
+        breathe: {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.035)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out both",
@@ -54,6 +58,7 @@ const config: Config = {
         "pulse-glow": "pulseGlow 4s ease-in-out infinite",
         "spin-slow": "spin 26s linear infinite",
         "spin-slower": "spin 40s linear infinite reverse",
+        breathe: "breathe 6s ease-in-out infinite",
       },
     },
   },
