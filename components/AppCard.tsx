@@ -1,28 +1,70 @@
 import Link from "next/link";
 import type { AppEntry } from "@/config/apps";
 
-export default function AppCard({ app }: { app: AppEntry }) {
+/**
+ * A small rotating set of soft gradient themes so the gallery feels lively
+ * while staying within the calm/warm palette. Chosen by card position.
+ */
+const MEDALLION_THEMES = [
+  "from-calm-300 to-calm-500",
+  "from-warmth-200 to-sun-400",
+  "from-lilac-200 to-lilac-400",
+  "from-calm-200 to-calm-400",
+];
+
+export default function AppCard({
+  app,
+  index = 0,
+}: {
+  app: AppEntry;
+  index?: number;
+}) {
+  const isExternal = app.type === "external";
+  const medallion = MEDALLION_THEMES[index % MEDALLION_THEMES.length];
+
   const content = (
-    <div className="flex h-full flex-col gap-3 rounded-xl2 border border-calm-100 bg-white p-5 shadow-soft transition-transform hover:-translate-y-1 hover:shadow-lg">
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-calm-50 text-3xl">
-        {app.thumbnail ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={app.thumbnail}
-            alt=""
-            className="h-full w-full rounded-2xl object-cover"
-          />
-        ) : (
-          <span>{app.emoji ?? "💙"}</span>
-        )}
+    <div
+      className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-xl2 border border-calm-100 bg-white/90 p-6 shadow-soft backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-calm-200 hover:shadow-lift animate-fade-up"
+      style={{ animationDelay: `${index * 70}ms` }}
+    >
+      {/* soft accent glow that warms up on hover */}
+      <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-calm-100 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-70" />
+
+      <div className="flex items-start justify-between">
+        <div
+          className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${medallion} text-2xl shadow-soft`}
+        >
+          {app.thumbnail ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={app.thumbnail}
+              alt=""
+              className="h-full w-full rounded-2xl object-cover"
+            />
+          ) : (
+            <span>{app.emoji ?? "💙"}</span>
+          )}
+        </div>
+
+        <span
+          className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${
+            isExternal
+              ? "bg-warmth-100 text-sun-500"
+              : "bg-calm-50 text-calm-600"
+          }`}
+        >
+          {isExternal ? "External site" : "In the hub"}
+        </span>
       </div>
 
       <div className="flex-1">
         <h3 className="text-lg font-semibold text-calm-700">{app.title}</h3>
         {app.creatorName && (
-          <p className="text-xs text-calm-500">by {app.creatorName}</p>
+          <p className="mt-0.5 text-xs text-calm-500">by {app.creatorName}</p>
         )}
-        <p className="mt-2 text-sm text-calm-600">{app.description}</p>
+        <p className="mt-2 text-sm leading-relaxed text-calm-600">
+          {app.description}
+        </p>
       </div>
 
       <div className="flex flex-wrap gap-1.5">
@@ -36,19 +78,22 @@ export default function AppCard({ app }: { app: AppEntry }) {
         ))}
       </div>
 
-      <div className="pt-1 text-sm font-medium text-sun-500">
-        {app.type === "external" ? "Open in new tab →" : "Open app →"}
+      <div className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-sun-500">
+        {isExternal ? "Open in new tab" : "Open app"}
+        <span className="transition-transform duration-300 group-hover:translate-x-1">
+          →
+        </span>
       </div>
     </div>
   );
 
-  if (app.type === "external") {
+  if (isExternal) {
     return (
       <a
         href={app.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="block h-full"
+        className="block h-full rounded-xl2 focus:outline-none focus-visible:ring-2 focus-visible:ring-calm-400"
       >
         {content}
       </a>
@@ -56,7 +101,10 @@ export default function AppCard({ app }: { app: AppEntry }) {
   }
 
   return (
-    <Link href={`/apps/${app.id}`} className="block h-full">
+    <Link
+      href={`/apps/${app.id}`}
+      className="block h-full rounded-xl2 focus:outline-none focus-visible:ring-2 focus-visible:ring-calm-400"
+    >
       {content}
     </Link>
   );

@@ -8,4 +8,24 @@ html {
 
 body {
   @apply bg-warmth-50 text-calm-700;
+  background-image: radial-gradient(
+      42rem 42rem at 12% -8%,
+      rgba(143, 205, 182, 0.28),
+      transparent 60%
+    ),
+    radial-gradient(
+      38rem 38rem at 105% 8%,
+      rgba(196, 177, 239, 0.22),
+      transparent 55%
+    );
+  background-repeat: no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

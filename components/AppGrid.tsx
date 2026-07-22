@@ -11,68 +11,66 @@ export default function AppGrid({
   apps: AppEntry[];
   allTags: string[];
 }) {
-  const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return apps.filter((app) => {
-      const matchesTag = !activeTag || app.tags.includes(activeTag);
-      if (!matchesTag) return false;
-      if (!q) return true;
-      const haystack = [app.title, app.description, app.creatorName ?? "", ...app.tags]
-        .join(" ")
-        .toLowerCase();
-      return haystack.includes(q);
-    });
-  }, [apps, query, activeTag]);
+    if (!activeTag) return apps;
+    return apps.filter((app) => app.tags.includes(activeTag));
+  }, [apps, activeTag]);
 
   return (
     <div>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search apps by name, tag, or creator..."
-          className="w-full rounded-full border border-calm-100 bg-white px-5 py-2.5 text-sm shadow-soft focus:outline-none focus:ring-2 focus:ring-calm-300 sm:max-w-sm"
-        />
-      </div>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-calm-700">Explore the apps</h2>
+          <p className="mt-1 text-sm text-calm-500">
+            {filtered.length} {filtered.length === 1 ? "app" : "apps"}
+            {activeTag ? (
+              <>
+                {" "}
+                tagged <span className="font-medium text-calm-600">{activeTag}</span>
+              </>
+            ) : (
+              " to explore"
+            )}
+          </p>
+        </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button
-          onClick={() => setActiveTag(null)}
-          className={`rounded-full px-3.5 py-1.5 text-sm transition-colors ${
-            activeTag === null
-              ? "bg-calm-500 text-white"
-              : "bg-white text-calm-600 hover:bg-calm-50"
-          }`}
-        >
-          All
-        </button>
-        {allTags.map((tag) => (
+        <div className="flex flex-wrap gap-2">
           <button
-            key={tag}
-            onClick={() => setActiveTag(tag)}
-            className={`rounded-full px-3.5 py-1.5 text-sm transition-colors ${
-              activeTag === tag
-                ? "bg-calm-500 text-white"
-                : "bg-white text-calm-600 hover:bg-calm-50"
+            onClick={() => setActiveTag(null)}
+            className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+              activeTag === null
+                ? "bg-calm-500 text-white shadow-soft"
+                : "border border-calm-100 bg-white/70 text-calm-600 hover:border-calm-300 hover:text-calm-700"
             }`}
           >
-            {tag}
+            All
           </button>
-        ))}
+          {allTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+              className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                activeTag === tag
+                  ? "bg-calm-500 text-white shadow-soft"
+                  : "border border-calm-100 bg-white/70 text-calm-600 hover:border-calm-300 hover:text-calm-700"
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
       </div>
 
       {filtered.length === 0 ? (
         <p className="mt-12 text-center text-calm-500">
-          No apps match your search yet. Try a different keyword or tag.
+          No apps with this tag yet — try another one.
         </p>
       ) : (
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((app) => (
-            <AppCard key={app.id} app={app} />
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((app, i) => (
+            <AppCard key={app.id} app={app} index={i} />
           ))}
         </div>
       )}
