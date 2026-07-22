@@ -69,7 +69,7 @@ export default function Welcome() {
 
       <div className="relative z-10 text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-calm-500">
-          {greeting}, friend
+          {greeting}
         </p>
 
         <h1 className="mt-5 text-4xl font-extrabold uppercase leading-[1.05] tracking-tight sm:text-6xl">
@@ -81,7 +81,7 @@ export default function Welcome() {
         </h1>
 
         <p className="mx-auto mt-6 max-w-xl text-lg text-calm-600">
-          A warm little home for the apps our young people build — to nurture{" "}
+          A warm little home for the apps our interns build — to nurture{" "}
           <span
             key={wordIndex}
             className="inline-block animate-fade-up font-semibold text-sun-500"
