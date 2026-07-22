@@ -1,8 +1,7 @@
 import {
   AvatarConfig,
   EnergyStyle,
-  HairStyle,
-  POSE_PATHS,
+  BODY_PATH,
   SYMBOL_OPTIONS,
 } from "@/lib/avatarOptions";
 
@@ -138,52 +137,6 @@ function SymbolOrbit({ symbols }: { symbols: string[] }) {
   );
 }
 
-/* Stylized hair as soft light shapes (not realistic texture). */
-function Hair({ hair, color }: { hair: HairStyle; color: string }) {
-  if (hair === "none") return null;
-  const cap = (
-    <path
-      d="M67 48 C64 8 136 8 133 48 C123 30 114 22 100 22 C86 22 77 30 67 48 Z"
-      fill={color}
-      opacity={0.7}
-    />
-  );
-  if (hair === "short") return <g>{cap}</g>;
-  if (hair === "long")
-    return (
-      <g>
-        {cap}
-        <path
-          d="M70 34 C48 92 50 152 60 202"
-          stroke={color}
-          strokeWidth={9}
-          fill="none"
-          strokeLinecap="round"
-          opacity={0.55}
-        />
-        <path
-          d="M130 34 C152 92 150 152 140 202"
-          stroke={color}
-          strokeWidth={9}
-          fill="none"
-          strokeLinecap="round"
-          opacity={0.55}
-        />
-      </g>
-    );
-  // tied back
-  return (
-    <g>
-      {cap}
-      <path
-        d="M128 26 C158 40 160 94 143 128 C152 96 150 48 126 34 Z"
-        fill={color}
-        opacity={0.55}
-      />
-    </g>
-  );
-}
-
 export default function ConfigurableAvatar({
   config,
   size = 150,
@@ -196,7 +149,6 @@ export default function ConfigurableAvatar({
   const glowCss = color ? `${color}80` : "rgb(var(--accent) / 0.5)";
   const haloColor = color ?? "rgb(var(--glow))";
   const energyColor = color ?? "rgb(var(--accent))";
-  const hairColor = config.hairColor ?? config.color ?? "rgb(var(--glow))";
   const h = Math.round((size * 380) / 200);
 
   return (
@@ -233,9 +185,8 @@ export default function ConfigurableAvatar({
             strokeLinecap="round"
           >
             <circle cx="100" cy="44" r="32" />
-            <path d={POSE_PATHS[config.pose] ?? POSE_PATHS.standing} />
+            <path d={BODY_PATH} />
           </g>
-          <Hair hair={config.hair} color={hairColor} />
         </svg>
       </div>
     </div>

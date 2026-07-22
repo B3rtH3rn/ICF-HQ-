@@ -6,8 +6,6 @@ import {
   AvatarConfig,
   AVATAR_COLORS,
   ENERGY_OPTIONS,
-  POSE_OPTIONS,
-  HAIR_OPTIONS,
   SYMBOL_OPTIONS,
 } from "@/lib/avatarOptions";
 
@@ -184,21 +182,6 @@ export default function AvatarCustomizer({
             </section>
 
             <section>
-              <SectionLabel>Stance</SectionLabel>
-              <div className="flex flex-wrap gap-2">
-                {POSE_OPTIONS.map((o) => (
-                  <Chip
-                    key={o.id}
-                    active={config.pose === o.id}
-                    onClick={() => set({ pose: o.id })}
-                  >
-                    {o.label}
-                  </Chip>
-                ))}
-              </div>
-            </section>
-
-            <section>
               <SectionLabel>Accent symbols</SectionLabel>
               <div className="flex flex-wrap gap-2">
                 {SYMBOL_OPTIONS.map((o) => (
@@ -218,46 +201,6 @@ export default function AvatarCustomizer({
                   </button>
                 ))}
               </div>
-            </section>
-
-            <section>
-              <SectionLabel>Hair</SectionLabel>
-              <div className="flex flex-wrap gap-2">
-                {HAIR_OPTIONS.map((o) => (
-                  <Chip
-                    key={o.id}
-                    active={config.hair === o.id}
-                    onClick={() => set({ hair: o.id })}
-                  >
-                    {o.label}
-                  </Chip>
-                ))}
-              </div>
-              {config.hair !== "none" && (
-                <div className="mt-3 flex flex-wrap items-center gap-2.5">
-                  <span className="text-xs text-muted">Hair color:</span>
-                  <button
-                    type="button"
-                    onClick={() => set({ hairColor: null })}
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                      config.hairColor === null
-                        ? "bg-accent2 text-white"
-                        : "border border-hairline text-muted hover:text-ink"
-                    }`}
-                  >
-                    Match
-                  </button>
-                  {AVATAR_COLORS.map((c) => (
-                    <Swatch
-                      key={c.id}
-                      value={c.value}
-                      title={c.label}
-                      active={config.hairColor === c.value}
-                      onClick={() => set({ hairColor: c.value })}
-                    />
-                  ))}
-                </div>
-              )}
             </section>
           </div>
         </div>
