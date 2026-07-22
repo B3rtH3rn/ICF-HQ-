@@ -19,6 +19,15 @@ export type DashboardBubble = {
   size: number;
 };
 
+/**
+ * Ambient "your journey" series (0..1 per point, oldest → newest). Drives only
+ * the shape of a soft glowing wave — no axes, numbers, or exact values shown.
+ * Reads as a gentle rhythm, not a metric.
+ */
+export const journeySeries = [
+  0.25, 0.4, 0.32, 0.52, 0.46, 0.62, 0.55, 0.7, 0.6, 0.8, 0.72, 0.88,
+];
+
 export const dashboardBubbles: DashboardBubble[] = [
   {
     id: "mood-tracker",

@@ -5,6 +5,7 @@ import { useMockUser } from "@/lib/mockAuth";
 import ParticleField from "@/components/ParticleField";
 import SilhouetteAvatar from "@/components/dashboard/SilhouetteAvatar";
 import AppBubble from "@/components/dashboard/AppBubble";
+import SidePanel from "@/components/dashboard/SidePanel";
 import { dashboardBubbles } from "@/lib/mockDashboard";
 
 export default function DashboardPage() {
@@ -48,17 +49,24 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* the orbiting stage */}
-        <div className="relative mx-auto mt-4 h-[520px] max-w-3xl sm:h-[580px]">
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <SilhouetteAvatar />
+        {/* rail + stage */}
+        <div className="mt-6 flex flex-col-reverse gap-6 lg:flex-row lg:items-start lg:gap-8">
+          <aside className="lg:w-72 lg:flex-shrink-0">
+            <SidePanel />
+          </aside>
+
+          {/* the floating stage */}
+          <div className="relative h-[500px] flex-1 sm:h-[560px]">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <SilhouetteAvatar />
+            </div>
+            {dashboardBubbles.map((b, i) => (
+              <AppBubble key={b.id} bubble={b} delay={i * 0.7} />
+            ))}
           </div>
-          {dashboardBubbles.map((b, i) => (
-            <AppBubble key={b.id} bubble={b} delay={i * 0.7} />
-          ))}
         </div>
 
-        <div className="text-center">
+        <div className="mt-8 text-center">
           <Link
             href="/apps"
             className="text-sm font-semibold text-accent underline-offset-4 hover:underline"
