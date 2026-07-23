@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daily Mood Tracker</title>
+  <title>Inspire Daily — Coming Soon</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -12,70 +12,35 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem 1rem;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem 1.5rem;
       margin: 0;
+      box-sizing: border-box;
     }
-    h1 { color: #295c50; }
-    .moods { display: flex; gap: 0.75rem; margin: 1.5rem 0; }
-    .moods button {
-      font-size: 2rem;
-      border: 2px solid transparent;
-      background: white;
-      border-radius: 12px;
-      padding: 0.5rem 0.75rem;
-      cursor: pointer;
+    .badge {
+      display: inline-block;
+      border: 1px dashed #3f8f79;
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #3f8f79;
+      margin-bottom: 1.25rem;
     }
-    .moods button.selected { border-color: #3f8f79; }
-    #log { max-width: 400px; width: 100%; }
-    .entry {
-      background: white;
-      border-radius: 10px;
-      padding: 0.6rem 0.9rem;
-      margin-bottom: 0.5rem;
-      display: flex;
-      justify-content: space-between;
-    }
-    .entry span.time { color: #6b8880; font-size: 0.8rem; }
+    h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    p { max-width: 32rem; line-height: 1.5; color: #4d746a; }
   </style>
 </head>
 <body>
-  <h1>🌤️ Daily Mood Tracker</h1>
-  <p>How are you feeling right now?</p>
-  <div class="moods">
-    <button data-mood="😀">😀</button>
-    <button data-mood="🙂">🙂</button>
-    <button data-mood="😐">😐</button>
-    <button data-mood="😔">😔</button>
-    <button data-mood="😢">😢</button>
-  </div>
-  <div id="log"></div>
-
-  <script>
-    const log = document.getElementById("log");
-    const buttons = document.querySelectorAll(".moods button");
-    const STORAGE_KEY = "mood-tracker-entries";
-    const entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        buttons.forEach((b) => b.classList.remove("selected"));
-        btn.classList.add("selected");
-        entries.unshift({ mood: btn.dataset.mood, time: new Date().toLocaleTimeString() });
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries.slice(0, 20)));
-        render();
-      });
-    });
-
-    function render() {
-      log.innerHTML = entries
-        .map(
-          (e) =>
-            `<div class="entry"><span>${e.mood}</span><span class="time">${e.time}</span></div>`
-        )
-        .join("");
-    }
-
-    render();
-  </script>
+  <span class="badge">Placeholder</span>
+  <h1>🌤️ Inspire Daily</h1>
+  <p>
+    This is a placeholder page. The real Inspire Daily app is being built and
+    will replace this soon — check back later!
+  </p>
 </body>
 </html>

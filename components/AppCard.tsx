@@ -21,11 +21,14 @@ export default function AppCard({
 }) {
   const isExternal = app.type === "external";
   const comingSoon = !!app.comingSoon;
+  const placeholder = !!app.placeholder;
   const medallion = MEDALLION_THEMES[index % MEDALLION_THEMES.length];
 
   const content = (
     <div
-      className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-xl2 border border-hairline bg-surface/90 p-6 shadow-soft backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift animate-fade-up"
+      className={`group relative flex h-full flex-col gap-4 overflow-hidden rounded-xl2 border bg-surface/90 p-6 shadow-soft backdrop-blur transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/40 hover:shadow-lift animate-fade-up ${
+        placeholder ? "border-dashed border-hairline" : "border-hairline"
+      }`}
       style={{ animationDelay: `${index * 70}ms` }}
     >
       {/* soft accent glow that warms up on hover */}
@@ -49,8 +52,8 @@ export default function AppCard({
 
         <span
           className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${
-            comingSoon
-              ? "bg-bg2 text-muted"
+            comingSoon || placeholder
+              ? "border border-dashed border-hairline bg-bg2 text-muted"
               : isExternal
                 ? "bg-accent2/15 text-accent2"
                 : "bg-bg2 text-muted"
@@ -58,9 +61,11 @@ export default function AppCard({
         >
           {comingSoon
             ? "Coming soon"
-            : isExternal
-              ? "External site"
-              : "In the hub"}
+            : placeholder
+              ? "Placeholder"
+              : isExternal
+                ? "External site"
+                : "In the hub"}
         </span>
       </div>
 
@@ -88,8 +93,14 @@ export default function AppCard({
       {comingSoon ? (
         <div className="mt-1 text-sm font-semibold text-muted">Coming soon</div>
       ) : (
-        <div className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-accent">
-          {isExternal ? "Open in new tab" : "Open app"}
+        <div
+          className={`mt-1 flex items-center gap-1.5 text-sm font-semibold ${placeholder ? "text-muted" : "text-accent"}`}
+        >
+          {placeholder
+            ? "View placeholder"
+            : isExternal
+              ? "Open in new tab"
+              : "Open app"}
           <span className="transition-transform duration-300 group-hover:translate-x-1">
             →
           </span>

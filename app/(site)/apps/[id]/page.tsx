@@ -32,6 +32,13 @@ export default function AppPage({ params }: { params: { id: string } }) {
         </Link>
       </div>
 
+      {app.placeholder && (
+        <div className="border-b border-dashed border-hairline bg-bg2 px-4 py-2 text-center text-xs font-medium text-muted sm:px-6">
+          Placeholder — this isn&apos;t the final app yet. The real {app.title}{" "}
+          is coming soon.
+        </div>
+      )}
+
       {/*
         sandbox restricts what the embedded student app can do:
         - allow-scripts / allow-same-origin: most mini apps need JS + localStorage to work

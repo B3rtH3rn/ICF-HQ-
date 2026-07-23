@@ -50,20 +50,36 @@ export interface AppEntry {
    * ignored until you remove this flag.
    */
   comingSoon?: boolean;
+  /**
+   * Optional. Different from `comingSoon`: use this when the entry IS live
+   * and clickable (real files behind it) but that content is a stand-in for
+   * a not-yet-finished app — e.g. reusing an old app's slug/files while the
+   * real replacement is being built. Shows a "Placeholder" badge on the card
+   * and the app page, but the app stays clickable/viewable.
+   */
+  placeholder?: boolean;
 }
 
 export const apps: AppEntry[] = [
   {
+    // NOTE: id/slug intentionally left as "mood-tracker" so existing links
+    // (e.g. /apps/mood-tracker) keep working. This entry used to be the real
+    // Daily Mood Tracker app; it's now a placeholder for the upcoming
+    // "Inspire Daily" app. When the real Inspire Daily is ready, swap it in:
+    //   a) still embedded -> replace the files in public/mini-apps/mood-tracker/
+    //      and remove `placeholder: true` below, or
+    //   b) hosted elsewhere -> change `type` to "external", point `url` at
+    //      the real site, and remove `placeholder: true`.
     id: "mood-tracker",
-    title: "Daily Mood Tracker",
+    title: "Inspire Daily",
     description:
-      "A gentle daily check-in that lets you log how you're feeling with a tap and see your recent moods at a glance.",
-    creatorName: "Example Student",
+      "Coming soon — this is a placeholder while the real Inspire Daily app is being built.",
     emoji: "🌤️",
     type: "embedded",
     url: "/mini-apps/mood-tracker/",
-    tags: ["mood", "check-in"],
+    tags: ["coming soon"],
     dateAdded: "2026-06-01",
+    placeholder: true,
   },
   {
     id: "calm-breathing",

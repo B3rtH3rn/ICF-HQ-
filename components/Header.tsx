@@ -96,7 +96,7 @@ export default function Header() {
                     <>
                       <span className="text-lg">{app.emoji ?? "💙"}</span>
                       <span className="flex-1 truncate">{app.title}</span>
-                      {app.comingSoon ? (
+                      {app.comingSoon || app.placeholder ? (
                         <span className="text-[10px] uppercase tracking-wider text-muted/70">
                           soon
                         </span>
