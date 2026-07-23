@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { apps } from "@/config/apps";
 import ThemeToggle from "./ThemeToggle";
 import Wordmark from "./Wordmark";
-import { useMockUser, logoutMock } from "@/lib/mockAuth";
+import { useAuth } from "./AuthProvider";
+import { createClient } from "@/lib/supabase/client";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -16,9 +17,20 @@ const NAV = [
 
 export default function Header() {
   const pathname = usePathname();
-  const user = useMockUser();
+  const { user, profile } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    // Hard navigation — avoids racing against the dashboard's own
+    // "no session -> go to /login" redirect effect when signing out
+    // from that page (whichever fires last would otherwise win).
+    window.location.href = "/";
+  };
+
+  const displayName = profile?.display_name || user?.email?.split("@")[0] || "";
 
   // Close on click-outside / Escape
   useEffect(() => {
@@ -165,18 +177,18 @@ export default function Header() {
           })}
         </nav>
 
-        {/* Auth (mock) */}
+        {/* Auth */}
         {user ? (
           <div className="flex flex-shrink-0 items-center gap-1">
             <Link
               href="/dashboard"
               className="rounded-full bg-accent2/15 px-3 py-1.5 text-sm font-semibold text-accent2 transition-colors hover:bg-accent2/25"
             >
-              Hi, {user.name}
+              Hi, {displayName}
             </Link>
             <button
               type="button"
-              onClick={() => logoutMock()}
+              onClick={handleSignOut}
               aria-label="Sign out"
               title="Sign out"
               className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline text-muted transition-colors hover:text-ink"

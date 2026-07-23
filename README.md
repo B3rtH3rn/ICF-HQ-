@@ -4,13 +4,15 @@ A website that showcases the apps and tools built by the young people in our
 foundation's program. Visitors browse a gallery of apps, search/filter by
 tag, and open any app right from the hub.
 
-Built with **Next.js**, **TypeScript**, and **Tailwind CSS**, exported as a
-static site so it's cheap and simple to host.
+Built with **Next.js**, **TypeScript**, **Tailwind CSS**, and **Supabase**
+(email/password auth + a `profiles` table for each user's avatar look).
 
 ## Running it locally
 
 You'll need [Node.js](https://nodejs.org) installed (the free "LTS" version
-is fine). Then, from this folder:
+is fine), plus a [Supabase](https://supabase.com) project (free tier is
+fine). See [Auth setup](#auth-setup-supabase) below for the one-time project
+setup, then from this folder:
 
 ```
 npm install
@@ -18,6 +20,30 @@ npm run dev
 ```
 
 Open `http://localhost:3000` in your browser.
+
+## Auth setup (Supabase)
+
+The hub uses [Supabase](https://supabase.com) for real email/password
+accounts. One-time setup:
+
+1. Create a free project at [supabase.com](https://supabase.com/dashboard).
+2. In the project, go to **Project Settings → API** and copy the **Project
+   URL** and the **anon public** key.
+3. Copy [`.env.local.example`](.env.local.example) to a new file named
+   `.env.local` in this folder, and paste those two values in:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
+   `.env.local` is gitignored — it never gets committed.
+4. In the Supabase dashboard, open the **SQL Editor** and run the migration
+   in [`supabase/profiles.sql`](supabase/profiles.sql) to create the
+   `profiles` table with Row Level Security enabled.
+5. Optional: under **Authentication → Providers → Email**, decide whether to
+   require email confirmation before sign-in. It's off by default in most
+   new projects, meaning someone can sign up and use the dashboard
+   immediately — confirmation enforcement is a deliberate follow-up
+   decision, not yet built.
 
 ## How to add a new app (no coding required!)
 
@@ -75,18 +101,32 @@ everything stays organized, but feel free to add a new one if nothing fits.
 ## Project structure
 
 ```
-app/                 pages (home, about, and the /apps/[id] viewer)
-components/          reusable UI pieces (header, footer, app cards, grid)
-config/apps.ts        <-- the app registry — the only file you need to edit
-public/mini-apps/<id>/     embedded apps' files live here
+app/                    pages (home, about, apps gallery, /apps/[id] viewer)
+app/login, app/signup, app/reset-password   auth pages (outside the main site chrome)
+app/(site)/dashboard    the signed-in, personalized dashboard
+components/             reusable UI pieces (header, footer, app cards, grid)
+components/dashboard/   the avatar, bubbles, side panel, customizer
+config/apps.ts           <-- the app registry — the only file you need to edit
+public/mini-apps/<id>/        embedded apps' files live here
+lib/supabase/            Supabase client helpers (browser + server)
+middleware.ts            refreshes the session + protects /dashboard
+supabase/profiles.sql    the one-time database migration (see Auth setup)
 ```
 
 ## Deployment
 
-This project is configured for static export (`output: "export"` in
-`next.config.mjs`), so `npm run build` produces a plain `/out` folder of
-static files that can be hosted almost anywhere.
+This project runs as a standard Next.js server app (not a static export) —
+real login requires a server to check sessions on each request via
+`middleware.ts`. It's deployed on Vercel, which runs Next.js natively.
 
-We haven't picked a hosting platform yet — before wiring up a real deploy
-(Vercel, Netlify, etc.), let's confirm which one we're using so the setup
-matches your account/domain.
+**Important:** `.env.local` only applies locally. For the live site to log
+anyone in, add the same two variables in the Vercel project's
+**Settings → Environment Variables**:
+
+```
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+```
+
+Redeploy after adding them (Vercel doesn't pick up new env vars on an
+already-running deployment).

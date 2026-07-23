@@ -1,44 +1,54 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ParticleField from "@/components/ParticleField";
 import Wordmark from "@/components/Wordmark";
 import { createClient } from "@/lib/supabase/client";
 import { friendlyAuthError } from "@/lib/authErrors";
 
-export default function LoginPage() {
-  return (
-    <Suspense fallback={null}>
-      <LoginForm />
-    </Suspense>
-  );
-}
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function LoginForm() {
+export default function SignupPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectedFrom = searchParams.get("redirectedFrom") || "/dashboard";
 
-  const [mode, setMode] = useState<"signin" | "forgot">("signin");
+  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
+  const validate = (): string | null => {
+    if (!displayName.trim()) return "Please enter a display name.";
+    if (!EMAIL_RE.test(email)) return "That doesn't look like a valid email address.";
+    if (password.length < 8) return "Password must be at least 8 characters.";
+    if (password !== confirmPassword) return "Passwords don't match.";
+    return null;
+  };
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setSubmitting(true);
+    setNotice(null);
 
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setSubmitting(true);
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: { display_name: displayName.trim() },
+      },
     });
-
     setSubmitting(false);
 
     if (error) {
@@ -46,33 +56,25 @@ function LoginForm() {
       return;
     }
 
-    router.push(redirectedFrom);
+    // If email confirmations are on in the Supabase project, there's no
+    // session yet — send them to sign in instead of the dashboard.
+    if (!data.session) {
+      setNotice(
+        "Account created! Check your email to confirm it, then sign in."
+      );
+      return;
+    }
+
+    router.push("/dashboard");
     router.refresh();
-  };
-
-  const onForgotSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSubmitting(true);
-
-    const supabase = createClient();
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-
-    setSubmitting(false);
-    // Same message whether or not the account exists — no account enumeration.
-    setNotice("If an account exists for that email, a reset link is on its way.");
   };
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-bg px-4 py-12">
-      {/* ambient background */}
       <ParticleField />
       <div className="pointer-events-none absolute -left-24 top-1/4 h-96 w-96 rounded-full bg-accent2/25 blur-[120px]" />
       <div className="pointer-events-none absolute -right-16 bottom-0 h-96 w-96 rounded-full bg-glow/20 blur-[120px]" />
 
-      {/* rotating HUD rings */}
       <div className="pointer-events-none absolute flex items-center justify-center">
         <div
           className="h-[560px] w-[560px] animate-spin-slow rounded-full opacity-50"
@@ -100,9 +102,8 @@ function LoginForm() {
         />
       </div>
 
-      {/* card */}
       <form
-        onSubmit={mode === "signin" ? onSubmit : onForgotSubmit}
+        onSubmit={onSubmit}
         className="relative z-10 w-full max-w-md rounded-3xl border border-hairline bg-surface/70 p-8 shadow-glow backdrop-blur-xl sm:p-10"
       >
         <div className="text-center">
@@ -110,16 +111,29 @@ function LoginForm() {
             <Wordmark className="text-sm" />
           </Link>
           <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-ink">
-            {mode === "signin" ? "Welcome back" : "Reset your password"}
+            Create your space
           </h1>
           <p className="mt-2 text-sm text-muted">
-            {mode === "signin"
-              ? "Sign in to step into your space."
-              : "We'll email you a link to set a new password."}
+            Join the hub — it only takes a minute.
           </p>
         </div>
 
         <div className="mt-8 space-y-4">
+          <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted">
+              Display name
+            </span>
+            <input
+              type="text"
+              required
+              maxLength={40}
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="What should we call you?"
+              className="w-full rounded-xl border border-hairline bg-bg2/70 px-4 py-3 text-ink placeholder:text-muted/60 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
+            />
+          </label>
+
           <label className="block">
             <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted">
               Email
@@ -134,21 +148,33 @@ function LoginForm() {
             />
           </label>
 
-          {mode === "signin" && (
-            <label className="block">
-              <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted">
-                Password
-              </span>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full rounded-xl border border-hairline bg-bg2/70 px-4 py-3 text-ink placeholder:text-muted/60 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
-              />
-            </label>
-          )}
+          <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted">
+              Password
+            </span>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="At least 8 characters"
+              className="w-full rounded-xl border border-hairline bg-bg2/70 px-4 py-3 text-ink placeholder:text-muted/60 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted">
+              Confirm password
+            </span>
+            <input
+              type="password"
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="••••••••"
+              className="w-full rounded-xl border border-hairline bg-bg2/70 px-4 py-3 text-ink placeholder:text-muted/60 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/40"
+            />
+          </label>
 
           {error && (
             <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:text-red-300">
@@ -166,11 +192,7 @@ function LoginForm() {
             disabled={submitting}
             className="group mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-accent2 py-3 text-base font-semibold text-white shadow-glow transition-transform hover:-translate-y-0.5 hover:brightness-110 disabled:opacity-60 disabled:hover:translate-y-0"
           >
-            {submitting
-              ? "Please wait…"
-              : mode === "signin"
-                ? "Sign in"
-                : "Send reset link"}
+            {submitting ? "Creating your space…" : "Create account"}
             {!submitting && (
               <span className="transition-transform group-hover:translate-x-1">
                 →
@@ -179,42 +201,15 @@ function LoginForm() {
           </button>
         </div>
 
-        <div className="mt-6 flex flex-col items-center gap-2 text-center text-xs text-muted">
-          {mode === "signin" ? (
-            <button
-              type="button"
-              onClick={() => {
-                setMode("forgot");
-                setError(null);
-                setNotice(null);
-              }}
-              className="underline-offset-2 hover:text-ink hover:underline"
-            >
-              Forgot password?
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
-                setMode("signin");
-                setError(null);
-                setNotice(null);
-              }}
-              className="underline-offset-2 hover:text-ink hover:underline"
-            >
-              ← Back to sign in
-            </button>
-          )}
-          <p>
-            New here?{" "}
-            <Link
-              href="/signup"
-              className="font-medium text-accent underline-offset-2 hover:underline"
-            >
-              Create an account
-            </Link>
-          </p>
-        </div>
+        <p className="mt-6 text-center text-xs text-muted">
+          Already have an account?{" "}
+          <Link
+            href="/login"
+            className="font-medium text-accent underline-offset-2 hover:underline"
+          >
+            Sign in
+          </Link>
+        </p>
       </form>
     </div>
   );

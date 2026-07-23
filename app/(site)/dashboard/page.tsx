@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useMockUser, updateMockAvatar } from "@/lib/mockAuth";
+import { useAuth } from "@/components/AuthProvider";
+import { createClient } from "@/lib/supabase/client";
 import ParticleField from "@/components/ParticleField";
 import ConfigurableAvatar from "@/components/dashboard/ConfigurableAvatar";
 import AvatarCustomizer from "@/components/dashboard/AvatarCustomizer";
@@ -12,36 +14,52 @@ import { dashboardBubbles } from "@/lib/mockDashboard";
 import { defaultAvatarConfig, AvatarConfig } from "@/lib/avatarOptions";
 
 export default function DashboardPage() {
-  const user = useMockUser();
+  const router = useRouter();
+  const { user, profile, loading, refreshProfile } = useAuth();
   const [config, setConfig] = useState<AvatarConfig>(defaultAvatarConfig);
   const [customizing, setCustomizing] = useState(false);
 
-  // Load the saved avatar from the (mock) profile once the user resolves.
+  // middleware.ts already redirects signed-out visitors before this ever
+  // renders — this is just a defensive fallback (e.g. a session that expires
+  // while the tab is already open).
   useEffect(() => {
-    if (user?.avatar) setConfig(user.avatar);
-  }, [user]);
+    if (!loading && !user) router.replace("/login");
+  }, [loading, user, router]);
 
-  const handleSave = (c: AvatarConfig) => {
+  // Load the saved avatar from the user's profile once it resolves.
+  useEffect(() => {
+    if (!profile) return;
+    setConfig({
+      color: profile.avatar_color,
+      energy: profile.avatar_energy,
+      symbols: profile.avatar_symbols ?? [],
+    });
+  }, [profile]);
+
+  const handleSave = async (c: AvatarConfig) => {
     setConfig(c);
-    updateMockAvatar(c);
+    if (!user) return;
+    const supabase = createClient();
+    await supabase
+      .from("profiles")
+      .update({
+        avatar_color: c.color,
+        avatar_energy: c.energy,
+        avatar_symbols: c.symbols,
+      })
+      .eq("id", user.id);
+    refreshProfile();
   };
 
-  if (!user) {
+  if (loading || !user) {
     return (
       <div className="mx-auto max-w-md px-4 py-24 text-center">
-        <h1 className="text-2xl font-bold text-ink">You&apos;re not signed in</h1>
-        <p className="mt-2 text-muted">
-          Sign in to step into your personal space.
-        </p>
-        <Link
-          href="/login"
-          className="mt-6 inline-block rounded-xl bg-accent2 px-6 py-3 font-semibold text-white shadow-glow transition-transform hover:-translate-y-0.5 hover:brightness-110"
-        >
-          Sign in
-        </Link>
+        <p className="text-muted">Loading your space…</p>
       </div>
     );
   }
+
+  const displayName = profile?.display_name || user.email?.split("@")[0] || "there";
 
   return (
     <div className="relative overflow-hidden">
@@ -55,7 +73,7 @@ export default function DashboardPage() {
           <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
             Welcome back,{" "}
             <span className="bg-gradient-to-r from-accent2 via-accent to-glow bg-clip-text text-transparent">
-              {user.name}
+              {displayName}
             </span>
           </h1>
           <p className="mx-auto mt-2 max-w-md text-sm text-muted">
