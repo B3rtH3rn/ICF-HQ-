@@ -136,6 +136,17 @@ export const apps: AppEntry[] = [
     tags: ["applications", "essays", "scholarships"],
     dateAdded: "2026-07-22",
   },
+  {
+    id: "tournament-tracker",
+    title: "Tournament Tracker",
+    description:
+      "Keep track of upcoming tournaments, matches, and results all in one place.",
+    emoji: "🏆",
+    type: "embedded-external",
+    url: "https://tournamenttracker.base44.app/",
+    tags: ["tournaments", "tennis"],
+    dateAdded: "2026-07-24",
+  },
 ];
 
 export function getAppById(id: string): AppEntry | undefined {
