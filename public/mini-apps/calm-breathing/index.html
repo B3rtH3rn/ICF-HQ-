@@ -4,40 +4,71 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Calm Breathing Buddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Shared hub tokens (colors, card/badge styles) — see public/mini-apps/_shared/ -->
+  <link rel="stylesheet" href="/mini-apps/_shared/theme.css" data-hub-theme />
   <style>
     body {
-      font-family: system-ui, sans-serif;
-      background: #f0f9f6;
-      color: #295c50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem 1.5rem;
+    }
+    .card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
+      gap: 1.4rem;
+      max-width: 22rem;
+      padding: 2.5rem 2rem;
       text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 600;
     }
     .circle {
       width: 140px;
       height: 140px;
       border-radius: 50%;
-      background: #8ecdb6;
+      background: rgb(var(--accent) / 0.9);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 1.1rem;
-      transition: transform 4s ease-in-out;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 500;
+      box-shadow: 0 0 32px -4px rgb(var(--accent) / 0.45);
+      transition:
+        transform 4s ease-in-out,
+        background-color 0.2s ease;
       transform: scale(1);
     }
-    .circle.grow { transform: scale(1.5); }
-    p { max-width: 280px; color: #5c6b68; }
+    .circle.grow {
+      transform: scale(1.5);
+    }
+    p {
+      margin: 0;
+      line-height: 1.5;
+    }
   </style>
 </head>
 <body>
-  <h1>🫧 Calm Breathing Buddy</h1>
-  <div class="circle" id="circle">Breathe in...</div>
-  <p>Follow the circle. It grows as you breathe in, and shrinks as you breathe out.</p>
+  <div class="card hub-card">
+    <h1>🫧 Calm Breathing Buddy</h1>
+    <div class="circle" id="circle">Breathe in...</div>
+    <p class="hub-muted">
+      Follow the circle. It grows as you breathe in, and shrinks as you
+      breathe out.
+    </p>
+  </div>
 
   <script>
     const circle = document.getElementById("circle");
@@ -52,5 +83,8 @@
     cycle();
     setInterval(cycle, 4000);
   </script>
+
+  <!-- Keeps this page's light/dark mode synced with the hub, live -->
+  <script src="/mini-apps/_shared/theme-sync.js" data-hub-theme-sync></script>
 </body>
 </html>

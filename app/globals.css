@@ -7,6 +7,10 @@
   the light/dark toggle is a single theme swap rather than two designs.
   Values are space-separated RGB channels so Tailwind's alpha modifiers work
   (e.g. bg-accent/20). Dark is the default experience; .dark holds its values.
+
+  These exact values are mirrored in public/mini-apps/_shared/theme.css so
+  plain static-HTML mini-apps (which can't use Tailwind) can match the hub
+  too — if you change a value here, update it there as well.
 */
 
 :root {

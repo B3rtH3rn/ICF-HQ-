@@ -1,0 +1,117 @@
+/*
+ * Shared theme tokens for embedded mini-apps under /public/mini-apps/.
+ *
+ * These variables and values are copied from the hub's actual design tokens
+ * in app/globals.css + tailwind.config.ts, so plain static HTML pages (which
+ * can't use Tailwind or next/font) can still match the hub exactly instead
+ * of inventing their own colors. If you change the color values in
+ * app/globals.css, mirror the change here too.
+ *
+ * Any embedded mini-app gets this file (plus theme-sync.js) auto-injected by
+ * the hub when it loads in the /apps/<id> viewer — see
+ * components/EmbeddedAppFrame.tsx — so this is opt-in only if you want to
+ * preview the app correctly when opened directly outside the hub.
+ */
+
+:root {
+  /* Light theme — calm, airy, blue-toned */
+  --bg: 236 242 251;
+  --bg-2: 224 235 249;
+  --surface: 255 255 255;
+  --border: 208 222 241;
+  --text: 22 36 64;
+  --muted: 90 108 138;
+  --accent: 13 146 166;
+  --accent-2: 42 106 202;
+  --glow: 44 176 203;
+}
+
+html.dark {
+  /* Dark theme — moody, deep-blue sci-fi HUD (the hub's default) */
+  --bg: 8 12 24;
+  --bg-2: 15 22 40;
+  --surface: 20 29 51;
+  --border: 34 47 76;
+  --text: 224 233 248;
+  --muted: 141 159 192;
+  --accent: 56 224 232;
+  --accent-2: 92 151 255;
+  --glow: 34 211 238;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family:
+    "Poppins",
+    system-ui,
+    sans-serif;
+  background-color: rgb(var(--bg));
+  color: rgb(var(--text));
+  background-image:
+    radial-gradient(
+      44rem 44rem at 12% -8%,
+      rgb(var(--accent-2) / 0.16),
+      transparent 60%
+    ),
+    radial-gradient(
+      40rem 40rem at 106% 4%,
+      rgb(var(--glow) / 0.13),
+      transparent 55%
+    );
+  background-repeat: no-repeat;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Same rounded-corner / soft-glow card look used across the hub. */
+.hub-card {
+  background: rgb(var(--surface) / 0.9);
+  border: 1px solid rgb(var(--border));
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 20px rgb(2 6 23 / 0.22);
+  backdrop-filter: blur(6px);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.hub-card--dashed {
+  border-style: dashed;
+}
+
+.hub-muted {
+  color: rgb(var(--muted));
+}
+
+.hub-accent {
+  color: rgb(var(--accent));
+}
+
+.hub-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgb(var(--bg-2));
+  color: rgb(var(--muted));
+}
+
+.hub-badge--dashed {
+  border: 1px dashed rgb(var(--border));
+  background: transparent;
+}

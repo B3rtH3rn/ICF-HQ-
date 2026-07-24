@@ -70,6 +70,21 @@ no page code, no routing, nothing.
    purpose — that name is reserved for the hub's own `/apps/<id>` viewer
    page, and reusing it causes a URL conflict on some hosts.)
 
+   **Matching the hub's look is automatic.** When your app loads in the
+   `/apps/<id>` viewer, the hub auto-injects its shared color theme and a
+   script that keeps your light/dark mode in sync with the rest of the site
+   live (see `components/EmbeddedAppFrame.tsx`) — you don't need to do
+   anything for this. It's inert unless your own CSS uses it, so a fully
+   custom-designed app is unaffected. If you *do* want your app to visually
+   match the hub (same background/card/badge look, not just matching
+   colors), use the CSS variables and classes in
+   [`public/mini-apps/_shared/theme.css`](public/mini-apps/_shared/theme.css)
+   (e.g. `var(--bg)`, `.hub-card`, `.hub-badge`) instead of inventing your
+   own colors — see `public/mini-apps/mood-tracker/index.html` or
+   `public/mini-apps/calm-breathing/index.html` for examples. Linking that
+   file (and `theme-sync.js`) directly in your own `<head>` also makes your
+   app look right when opened outside the hub, e.g. while you're building it.
+
 ### Step 3: Add an entry to the registry
 
 Open [`config/apps.ts`](config/apps.ts) and copy one of the existing entries

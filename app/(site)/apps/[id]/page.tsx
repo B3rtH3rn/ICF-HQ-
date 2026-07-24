@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { apps, getAppById } from "@/config/apps";
+import EmbeddedAppFrame from "@/components/EmbeddedAppFrame";
 
 export function generateStaticParams() {
   return apps
@@ -40,19 +41,15 @@ export default function AppPage({ params }: { params: { id: string } }) {
       )}
 
       {/*
-        sandbox restricts what the embedded student app can do:
+        EmbeddedAppFrame's sandbox restricts what the embedded student app can do:
         - allow-scripts / allow-same-origin: most mini apps need JS + localStorage to work
+          (allow-same-origin is also what lets it auto-inject the hub's shared theme, see
+          components/EmbeddedAppFrame.tsx)
         - allow-forms / allow-modals / allow-popups: common needs for interactive apps
         Notably OMITTED: allow-top-navigation and allow-popups-to-escape-sandbox, so a
         broken or misbehaving app can't redirect or hijack the parent hub page.
       */}
-      <iframe
-        src={app.url}
-        title={app.title}
-        className="flex-1 border-0"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups"
-        loading="lazy"
-      />
+      <EmbeddedAppFrame src={app.url} title={app.title} />
     </div>
   );
 }
