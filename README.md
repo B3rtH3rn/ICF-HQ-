@@ -56,7 +56,16 @@ no page code, no routing, nothing.
 - **Option A — "embedded"**: your app is a simple website (HTML/CSS/JS files)
   and you want it to live right inside the hub.
 - **Option B — "external"**: your app is already live somewhere else (your
-  own Vercel/Replit link, etc.) and you just want the hub to link out to it.
+  own Vercel/Replit link, etc.) and you just want the hub to link out to it
+  in a new tab.
+- **Option C — "embedded-external"**: your app is already live somewhere
+  else, but you want it to show up *inline* inside the hub anyway (like
+  Option A, just pointed at a remote URL instead of local files). This only
+  works if that site allows itself to be iframed — a `X-Frame-Options` or
+  CSP `frame-ancestors` header on their end can block it, which isn't
+  something we can fix from the hub's side. See
+  `components/EmbeddedExternalAppFrame.tsx` for the sandbox/fallback
+  details.
 
 ### Step 2: If you chose "embedded", add your files
 

@@ -7,7 +7,7 @@
  * instructions written for non-developers.
  */
 
-export type AppType = "embedded" | "external";
+export type AppType = "embedded" | "external" | "embedded-external";
 
 export interface AppEntry {
   /** Unique, URL-safe id. Lowercase letters, numbers, and hyphens only. */
@@ -23,10 +23,16 @@ export interface AppEntry {
   /** Emoji shown when no thumbnail is provided. */
   emoji?: string;
   /**
-   * "embedded"  -> the app's files live in /public/mini-apps/<id>/ and are shown
-   *                inside the hub via an iframe at /apps/<id>.
-   * "external"  -> the app is hosted somewhere else; the card links out to
-   *                `url` in a new tab.
+   * "embedded"           -> the app's files live in /public/mini-apps/<id>/ and are
+   *                         shown inside the hub via an iframe at /apps/<id>.
+   * "external"           -> the app is hosted somewhere else; the card links out to
+   *                         `url` in a new tab, not shown inline.
+   * "embedded-external"  -> the app is hosted somewhere else (its own domain), but
+   *                         still shown inline via an iframe at /apps/<id>, same as
+   *                         "embedded" — just pointed at a remote `url` instead of a
+   *                         local folder. The remote host must actually allow being
+   *                         iframed (no X-Frame-Options/CSP frame-ancestors block) —
+   *                         that's a setting on their end, not something we control.
    *
    * NOTE: embedded assets live under /public/mini-apps/ rather than /public/apps/
    * on purpose — that keeps them from colliding with the /apps/<id> hub route
@@ -36,8 +42,11 @@ export interface AppEntry {
   /**
    * For "embedded" apps: path to the app's folder under /public, with a
    * trailing slash, e.g. "/mini-apps/mood-tracker/" (the folder must contain
-   * an index.html). For "external" apps: the full URL to the app, e.g.
-   * "https://my-app.vercel.app".
+   * an index.html). For "external" and "embedded-external" apps: the full
+   * URL to the app, e.g. "https://my-app.onrender.com/". Use the app's root
+   * URL rather than a deep link like `/login` — if the app needs the user
+   * to sign in, let it redirect there itself, so already-logged-in users
+   * aren't bounced to a login screen unnecessarily.
    */
   url: string;
   /** Keywords used by the search/filter bar. */
@@ -62,24 +71,21 @@ export interface AppEntry {
 
 export const apps: AppEntry[] = [
   {
-    // NOTE: id/slug intentionally left as "mood-tracker" so existing links
-    // (e.g. /apps/mood-tracker) keep working. This entry used to be the real
-    // Daily Mood Tracker app; it's now a placeholder for the upcoming
-    // "Inspire Daily" app. When the real Inspire Daily is ready, swap it in:
-    //   a) still embedded -> replace the files in public/mini-apps/mood-tracker/
-    //      and remove `placeholder: true` below, or
-    //   b) hosted elsewhere -> change `type` to "external", point `url` at
-    //      the real site, and remove `placeholder: true`.
-    id: "mood-tracker",
+    // NOTE: id/slug renamed from "mood-tracker" to "inspire-daily" (2026-07-23)
+    // now that the real app is live — this was a deliberate one-time rename,
+    // approved by the user, knowing it breaks any old /apps/mood-tracker
+    // links/bookmarks. The old placeholder files are still sitting unused at
+    // public/mini-apps/mood-tracker/ — flagged for the user to decide
+    // whether to delete them.
+    id: "inspire-daily",
     title: "Inspire Daily",
     description:
-      "Coming soon — this is a placeholder while the real Inspire Daily app is being built.",
+      "A daily companion to help you check in with yourself, reflect, and build small, healthy habits.",
     emoji: "🌤️",
-    type: "embedded",
-    url: "/mini-apps/mood-tracker/",
-    tags: ["coming soon"],
+    type: "embedded-external",
+    url: "https://inspire-daily.onrender.com/",
+    tags: ["daily check-in", "reflection"],
     dateAdded: "2026-06-01",
-    placeholder: true,
   },
   {
     id: "calm-breathing",

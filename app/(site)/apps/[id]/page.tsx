@@ -2,17 +2,20 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { apps, getAppById } from "@/config/apps";
 import EmbeddedAppFrame from "@/components/EmbeddedAppFrame";
+import EmbeddedExternalAppFrame from "@/components/EmbeddedExternalAppFrame";
+
+const INLINE_TYPES = ["embedded", "embedded-external"];
 
 export function generateStaticParams() {
   return apps
-    .filter((app) => app.type === "embedded" && !app.comingSoon)
+    .filter((app) => INLINE_TYPES.includes(app.type) && !app.comingSoon)
     .map((app) => ({ id: app.id }));
 }
 
 export default function AppPage({ params }: { params: { id: string } }) {
   const app = getAppById(params.id);
 
-  if (!app || app.type !== "embedded" || app.comingSoon) {
+  if (!app || !INLINE_TYPES.includes(app.type) || app.comingSoon) {
     notFound();
   }
 
@@ -41,15 +44,23 @@ export default function AppPage({ params }: { params: { id: string } }) {
       )}
 
       {/*
-        EmbeddedAppFrame's sandbox restricts what the embedded student app can do:
-        - allow-scripts / allow-same-origin: most mini apps need JS + localStorage to work
-          (allow-same-origin is also what lets it auto-inject the hub's shared theme, see
-          components/EmbeddedAppFrame.tsx)
-        - allow-forms / allow-modals / allow-popups: common needs for interactive apps
-        Notably OMITTED: allow-top-navigation and allow-popups-to-escape-sandbox, so a
-        broken or misbehaving app can't redirect or hijack the parent hub page.
+        Two frame components, same visual treatment, different sandboxes:
+        - EmbeddedAppFrame (type "embedded"): our own static files, same origin.
+          allow-scripts/allow-same-origin/allow-forms/allow-modals/allow-popups —
+          generous, since it's our own trusted content, and allow-same-origin is
+          also what lets it auto-inject the hub's shared theme (see the component).
+        - EmbeddedExternalAppFrame (type "embedded-external"): a genuinely
+          third-party origin, so a tighter sandbox (see that component for the
+          reasoning on each flag) plus a loading/fallback UI, since we can't
+          control or fully trust what that remote site does.
+        Both omit allow-top-navigation and allow-popups-to-escape-sandbox, so a
+        broken or misbehaving app can't redirect or hijack this hub page.
       */}
-      <EmbeddedAppFrame src={app.url} title={app.title} />
+      {app.type === "embedded-external" ? (
+        <EmbeddedExternalAppFrame src={app.url} title={app.title} />
+      ) : (
+        <EmbeddedAppFrame src={app.url} title={app.title} />
+      )}
     </div>
   );
 }
