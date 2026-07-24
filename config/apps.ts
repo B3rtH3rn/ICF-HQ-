@@ -7,7 +7,7 @@
  * instructions written for non-developers.
  */
 
-export type AppType = "embedded" | "external" | "embedded-external";
+export type AppType = "embedded" | "external" | "embedded-external" | "native";
 
 export interface AppEntry {
   /** Unique, URL-safe id. Lowercase letters, numbers, and hyphens only. */
@@ -33,6 +33,14 @@ export interface AppEntry {
    *                         local folder. The remote host must actually allow being
    *                         iframed (no X-Frame-Options/CSP frame-ancestors block) —
    *                         that's a setting on their end, not something we control.
+   * "native"             -> the app is a React component that lives IN this project
+   *                         (components/apps/<Name>.jsx) and renders directly at
+   *                         /apps/<id> — no iframe, no separate hosting. Unlike the
+   *                         other three types, adding one of these does require a
+   *                         small touch of routing code: register the component in
+   *                         the NATIVE_COMPONENTS map in
+   *                         app/(site)/apps/[id]/page.tsx. `url` is unused for this
+   *                         type (leave it "").
    *
    * NOTE: embedded assets live under /public/mini-apps/ rather than /public/apps/
    * on purpose — that keeps them from colliding with the /apps/<id> hub route
@@ -46,7 +54,8 @@ export interface AppEntry {
    * URL to the app, e.g. "https://my-app.onrender.com/". Use the app's root
    * URL rather than a deep link like `/login` — if the app needs the user
    * to sign in, let it redirect there itself, so already-logged-in users
-   * aren't bounced to a login screen unnecessarily.
+   * aren't bounced to a login screen unnecessarily. For "native" apps: unused,
+   * leave as "".
    */
   url: string;
   /** Keywords used by the search/filter bar. */
@@ -112,16 +121,20 @@ export const apps: AppEntry[] = [
     comingSoon: true,
   },
   {
+    // Was a "coming soon" placeholder; replaced in place (same id, so the
+    // /apps/college-process URL doesn't change) now that the real app is
+    // built. Native React component, not iframed — see
+    // components/apps/CollegeProcessTracker.jsx and the NATIVE_COMPONENTS
+    // map in app/(site)/apps/[id]/page.tsx.
     id: "college-process",
-    title: "College Process",
+    title: "College Process Tracker",
     description:
-      "Step-by-step help navigating applications, deadlines, and everything college-bound.",
+      "Track schools, essays, recommendations, scholarships, coach calls, campus visits, and more — all in one place.",
     emoji: "🎓",
-    type: "embedded",
+    type: "native",
     url: "",
-    tags: [],
+    tags: ["applications", "essays", "scholarships"],
     dateAdded: "2026-07-22",
-    comingSoon: true,
   },
 ];
 

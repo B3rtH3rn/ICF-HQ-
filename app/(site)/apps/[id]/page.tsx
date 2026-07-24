@@ -1,10 +1,21 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import type { ComponentType } from "react";
 import { apps, getAppById } from "@/config/apps";
 import EmbeddedAppFrame from "@/components/EmbeddedAppFrame";
 import EmbeddedExternalAppFrame from "@/components/EmbeddedExternalAppFrame";
+import CollegeProcessTracker from "@/components/apps/CollegeProcessTracker";
 
-const INLINE_TYPES = ["embedded", "embedded-external"];
+const INLINE_TYPES = ["embedded", "embedded-external", "native"];
+
+/**
+ * Registry for "native" apps (see config/apps.ts) — React components that
+ * live in this project and render directly, no iframe. This is the one bit
+ * of routing code a native app needs: add its component here, keyed by id.
+ */
+const NATIVE_COMPONENTS: Record<string, ComponentType> = {
+  "college-process": CollegeProcessTracker,
+};
 
 export function generateStaticParams() {
   return apps
@@ -16,6 +27,12 @@ export default function AppPage({ params }: { params: { id: string } }) {
   const app = getAppById(params.id);
 
   if (!app || !INLINE_TYPES.includes(app.type) || app.comingSoon) {
+    notFound();
+  }
+
+  const NativeComponent =
+    app.type === "native" ? NATIVE_COMPONENTS[app.id] : null;
+  if (app.type === "native" && !NativeComponent) {
     notFound();
   }
 
@@ -44,7 +61,7 @@ export default function AppPage({ params }: { params: { id: string } }) {
       )}
 
       {/*
-        Two frame components, same visual treatment, different sandboxes:
+        Three renderers, same header/back-link treatment above:
         - EmbeddedAppFrame (type "embedded"): our own static files, same origin.
           allow-scripts/allow-same-origin/allow-forms/allow-modals/allow-popups —
           generous, since it's our own trusted content, and allow-same-origin is
@@ -53,10 +70,17 @@ export default function AppPage({ params }: { params: { id: string } }) {
           third-party origin, so a tighter sandbox (see that component for the
           reasoning on each flag) plus a loading/fallback UI, since we can't
           control or fully trust what that remote site does.
-        Both omit allow-top-navigation and allow-popups-to-escape-sandbox, so a
-        broken or misbehaving app can't redirect or hijack this hub page.
+        - NativeComponent (type "native"): no iframe at all — just a React
+          component from this project, rendered directly.
+        The two iframe cases omit allow-top-navigation and
+        allow-popups-to-escape-sandbox, so a broken or misbehaving app can't
+        redirect or hijack this hub page.
       */}
-      {app.type === "embedded-external" ? (
+      {NativeComponent ? (
+        <div className="flex-1 overflow-auto">
+          <NativeComponent />
+        </div>
+      ) : app.type === "embedded-external" ? (
         <EmbeddedExternalAppFrame src={app.url} title={app.title} />
       ) : (
         <EmbeddedAppFrame src={app.url} title={app.title} />
