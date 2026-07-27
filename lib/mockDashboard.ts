@@ -40,16 +40,6 @@ export const dashboardBubbles: DashboardBubble[] = [
     size: 102,
   },
   {
-    id: "calm-breathing",
-    title: "Calm Breathing Buddy",
-    emoji: "🫧",
-    href: "/apps/calm-breathing",
-    activity: 0.55,
-    note: "You paused to breathe recently",
-    pos: { left: "76%", top: "22%" },
-    size: 88,
-  },
-  {
     id: "summer-challenge",
     title: "Summer Challenge",
     emoji: "☀️",

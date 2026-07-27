@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journal — Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Shared hub tokens (colors, card/badge styles) — see public/mini-apps/_shared/ -->
+  <link rel="stylesheet" href="/mini-apps/_shared/theme.css" data-hub-theme />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .card {
+      max-width: 26rem;
+      padding: 2.5rem 2rem;
+    }
+    h1 {
+      margin: 0.9rem 0 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    p {
+      margin: 0;
+      line-height: 1.55;
+    }
+  </style>
+</head>
+<body>
+  <div class="card hub-card hub-card--dashed">
+    <span class="hub-badge hub-badge--dashed">Placeholder</span>
+    <h1>📔 Journal</h1>
+    <p class="hub-muted">
+      This is a placeholder page. The real Journal app is being built and
+      will replace this soon — check back later!
+    </p>
+  </div>
+
+  <!-- Keeps this page's light/dark mode synced with the hub, live -->
+  <script src="/mini-apps/_shared/theme-sync.js" data-hub-theme-sync></script>
+</body>
+</html>
