@@ -83,9 +83,8 @@ export const apps: AppEntry[] = [
     // NOTE: id/slug renamed from "mood-tracker" to "inspire-daily" (2026-07-23)
     // now that the real app is live — this was a deliberate one-time rename,
     // approved by the user, knowing it breaks any old /apps/mood-tracker
-    // links/bookmarks. The old placeholder files are still sitting unused at
-    // public/mini-apps/mood-tracker/ — flagged for the user to decide
-    // whether to delete them.
+    // links/bookmarks. The old placeholder files at
+    // public/mini-apps/mood-tracker/ have since been deleted (2026-07-28).
     id: "inspire-daily",
     title: "Inspire Daily",
     description:
