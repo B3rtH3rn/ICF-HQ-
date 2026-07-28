@@ -155,6 +155,17 @@ export const apps: AppEntry[] = [
     dateAdded: "2026-07-24",
     placeholder: true,
   },
+  {
+    id: "office-clean-up",
+    title: "Office Clean Up",
+    description:
+      "Organize cleanup tasks and keep the office space tidy, together.",
+    emoji: "🧹",
+    type: "embedded-external",
+    url: "https://tentacled-tidy-desk-flow.base44.app",
+    tags: ["organization", "tasks"],
+    dateAdded: "2026-07-28",
+  },
 ];
 
 export function getAppById(id: string): AppEntry | undefined {

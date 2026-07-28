@@ -79,4 +79,14 @@ export const dashboardBubbles: DashboardBubble[] = [
     pos: { left: "13%", top: "52%" },
     size: 72,
   },
+  {
+    id: "office-clean-up",
+    title: "Office Clean Up",
+    emoji: "🧹",
+    href: getAppRoute("office-clean-up"),
+    activity: 0.3,
+    note: "A few tasks tidied up recently",
+    pos: { left: "78%", top: "28%" },
+    size: 82,
+  },
 ];
