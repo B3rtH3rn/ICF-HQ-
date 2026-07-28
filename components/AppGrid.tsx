@@ -14,8 +14,16 @@ export default function AppGrid({
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    if (!activeTag) return apps;
-    return apps.filter((app) => app.tags.includes(activeTag));
+    const list = activeTag
+      ? apps.filter((app) => app.tags.includes(activeTag))
+      : apps;
+
+    // Alphabetical by title, case-insensitive and ignoring leading/trailing
+    // whitespace — computed here at render time (not relying on registry
+    // order) so newly added apps automatically slot into place.
+    return [...list].sort((a, b) =>
+      a.title.trim().toLowerCase().localeCompare(b.title.trim().toLowerCase())
+    );
   }, [apps, activeTag]);
 
   const tabs = [{ label: "All apps", value: null as string | null }].concat(
