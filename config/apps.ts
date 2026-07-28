@@ -187,6 +187,17 @@ export const apps: AppEntry[] = [
     tags: ["games", "breaks"],
     dateAdded: "2026-07-28",
   },
+  {
+    id: "icf-reflect",
+    title: "ICF Reflect",
+    description:
+      "A quiet space to check in with yourself and reflect on how you're doing.",
+    emoji: "🪞",
+    type: "embedded-external",
+    url: "https://elated-mind-reflect-core.base44.app",
+    tags: ["reflection", "mental health"],
+    dateAdded: "2026-07-29",
+  },
 ];
 
 export function getAppById(id: string): AppEntry | undefined {
