@@ -176,6 +176,17 @@ export const apps: AppEntry[] = [
     tags: ["tennis", "logistics"],
     dateAdded: "2026-07-28",
   },
+  {
+    id: "brain-break-roulette",
+    title: "Brain Break Roulette",
+    description:
+      "Spin for a quick, random brain break — a fun way to reset between tasks.",
+    emoji: "🎡",
+    type: "embedded-external",
+    url: "https://refined-brain-break-blitz.base44.app",
+    tags: ["games", "breaks"],
+    dateAdded: "2026-07-28",
+  },
 ];
 
 export function getAppById(id: string): AppEntry | undefined {
