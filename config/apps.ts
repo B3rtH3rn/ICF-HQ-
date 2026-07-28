@@ -161,6 +161,22 @@ export function getAppById(id: string): AppEntry | undefined {
   return apps.find((app) => app.id === id);
 }
 
+/**
+ * The hub-hosted route for an app, if it has one — for anything that links
+ * to an app by id (e.g. the dashboard's floating bubbles) instead of
+ * hardcoding "/apps/<id>" paths. Returns undefined (treat as unavailable/
+ * "coming soon") when the id doesn't exist, the app is marked comingSoon,
+ * or it's type "external" (those open in a new tab via their own `url`,
+ * not a page on this site) — so a caller doesn't need to duplicate any of
+ * that logic, and stays correct automatically if an app's id or status
+ * changes here.
+ */
+export function getAppRoute(id: string): string | undefined {
+  const app = getAppById(id);
+  if (!app || app.comingSoon || app.type === "external") return undefined;
+  return `/apps/${app.id}`;
+}
+
 export function getAllTags(): string[] {
   const tagSet = new Set<string>();
   apps.forEach((app) => app.tags.forEach((tag) => tagSet.add(tag)));

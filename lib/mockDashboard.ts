@@ -5,7 +5,14 @@
  * glow — intentionally NOT shown as a number, to keep the dashboard ambient and
  * non-evaluative rather than a score/report card. `note` is a warm one-liner
  * revealed on hover.
+ *
+ * Each bubble's `href` is resolved from the app registry via `getAppRoute()`
+ * rather than hardcoded, so a bubble automatically falls back to "coming
+ * soon" (no href, not clickable) if its app id ever stops resolving to a
+ * real route — instead of silently linking to a dead page.
  */
+
+import { getAppRoute } from "@/config/apps";
 
 export type DashboardBubble = {
   id: string;
@@ -30,30 +37,26 @@ export const journeySeries = [
 
 export const dashboardBubbles: DashboardBubble[] = [
   {
-    id: "mood-tracker",
-    title: "Daily Mood Tracker",
+    // Was "mood-tracker" / "Daily Mood Tracker" — that app was renamed to
+    // Inspire Daily a while back (see config/apps.ts), which left this
+    // bubble's old hardcoded href silently pointing at a dead page. Fixed
+    // in place rather than adding a second bubble for the same app.
+    id: "inspire-daily",
+    title: "Inspire Daily",
     emoji: "🌤️",
-    href: "/apps/mood-tracker",
+    href: getAppRoute("inspire-daily"),
     activity: 0.8,
     note: "A few gentle check-ins lately",
     pos: { left: "21%", top: "26%" },
     size: 102,
   },
   {
-    id: "summer-challenge",
-    title: "Summer Challenge",
-    emoji: "☀️",
-    activity: 0.3,
-    note: "Coming soon",
-    pos: { left: "85%", top: "58%" },
-    size: 84,
-  },
-  {
     id: "college-process",
-    title: "College Process",
+    title: "College Process Tracker",
     emoji: "🎓",
+    href: getAppRoute("college-process"),
     activity: 0.25,
-    note: "Coming soon",
+    note: "Your college journey, all in one place",
     pos: { left: "70%", top: "82%" },
     size: 80,
   },
@@ -61,8 +64,9 @@ export const dashboardBubbles: DashboardBubble[] = [
     id: "journal",
     title: "Journal",
     emoji: "📔",
+    href: getAppRoute("journal"),
     activity: 0.2,
-    note: "Coming soon",
+    note: "A quiet space to reflect — more coming soon",
     pos: { left: "20%", top: "76%" },
     size: 78,
   },
