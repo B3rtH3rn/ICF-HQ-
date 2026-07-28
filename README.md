@@ -89,10 +89,9 @@ no page code, no routing, nothing.
    colors), use the CSS variables and classes in
    [`public/mini-apps/_shared/theme.css`](public/mini-apps/_shared/theme.css)
    (e.g. `var(--bg)`, `.hub-card`, `.hub-badge`) instead of inventing your
-   own colors — see `public/mini-apps/journal/index.html` for an example.
-   Linking that file (and `theme-sync.js`) directly in your own `<head>`
-   also makes your app look right when opened outside the hub, e.g. while
-   you're building it.
+   own colors. Linking that file (and `theme-sync.js`) directly in your own
+   `<head>` also makes your app look right when opened outside the hub,
+   e.g. while you're building it.
 
 ### Step 3: Add an entry to the registry
 

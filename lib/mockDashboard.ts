@@ -61,16 +61,6 @@ export const dashboardBubbles: DashboardBubble[] = [
     size: 80,
   },
   {
-    id: "journal",
-    title: "Journal",
-    emoji: "📔",
-    href: getAppRoute("journal"),
-    activity: 0.2,
-    note: "A quiet space to reflect — more coming soon",
-    pos: { left: "20%", top: "76%" },
-    size: 78,
-  },
-  {
     id: "gratitude",
     title: "Gratitude",
     emoji: "✨",

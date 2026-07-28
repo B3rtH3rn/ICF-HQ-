@@ -135,26 +135,6 @@ export const apps: AppEntry[] = [
     dateAdded: "2026-07-24",
   },
   {
-    // NOTE: placeholder for the upcoming "Journal" app — the files at
-    // public/mini-apps/journal/ are just a simple "coming soon" page, not
-    // the real app. When the real Journal app is ready, swap it in:
-    //   a) still embedded -> replace the files in public/mini-apps/journal/
-    //      and remove `placeholder: true` below, or
-    //   b) hosted elsewhere -> change `type` to "external" or
-    //      "embedded-external", point `url` at the real site, and remove
-    //      `placeholder: true`.
-    id: "journal",
-    title: "Journal",
-    description:
-      "Coming soon — this is a placeholder while the real Journal app is being built.",
-    emoji: "📔",
-    type: "embedded",
-    url: "/mini-apps/journal/",
-    tags: ["coming soon"],
-    dateAdded: "2026-07-24",
-    placeholder: true,
-  },
-  {
     id: "office-clean-up",
     title: "Office Clean Up",
     description:
