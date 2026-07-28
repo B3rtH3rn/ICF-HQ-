@@ -165,6 +165,17 @@ export const apps: AppEntry[] = [
     tags: ["organization", "tasks"],
     dateAdded: "2026-07-28",
   },
+  {
+    id: "court-compass",
+    title: "Court Compass",
+    description:
+      "Plan and organize court trips — find courts, coordinate rides, and keep everyone on the same page.",
+    emoji: "🧭",
+    type: "embedded-external",
+    url: "https://court-trip-pro.base44.app/",
+    tags: ["tennis", "logistics"],
+    dateAdded: "2026-07-28",
+  },
 ];
 
 export function getAppById(id: string): AppEntry | undefined {
