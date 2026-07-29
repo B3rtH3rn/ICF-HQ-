@@ -89,6 +89,7 @@ export const apps: AppEntry[] = [
     title: "Inspire Daily",
     description:
       "A daily companion to help you check in with yourself, reflect, and build small, healthy habits.",
+    creatorName: "Yuni P.",
     emoji: "🌤️",
     type: "embedded-external",
     url: "https://inspire-daily.onrender.com/",
@@ -117,6 +118,7 @@ export const apps: AppEntry[] = [
     title: "College Process Tracker",
     description:
       "Track schools, essays, recommendations, scholarships, coach calls, campus visits, and more — all in one place.",
+    creatorName: "Valerii S.",
     emoji: "🎓",
     type: "native",
     url: "",
@@ -128,6 +130,7 @@ export const apps: AppEntry[] = [
     title: "Tournament Tracker",
     description:
       "Keep track of upcoming tournaments, matches, and results all in one place.",
+    creatorName: "McAdam L.",
     emoji: "🏆",
     type: "embedded-external",
     url: "https://tournamenttracker.base44.app/",
@@ -139,6 +142,7 @@ export const apps: AppEntry[] = [
     title: "Office Clean Up",
     description:
       "Organize cleanup tasks and keep the office space tidy, together.",
+    creatorName: "Austin S.",
     emoji: "🧹",
     type: "embedded-external",
     url: "https://tentacled-tidy-desk-flow.base44.app",
@@ -150,6 +154,7 @@ export const apps: AppEntry[] = [
     title: "Court Compass",
     description:
       "Plan and organize court trips — find courts, coordinate rides, and keep everyone on the same page.",
+    creatorName: "Rafa A.",
     emoji: "🧭",
     type: "embedded-external",
     url: "https://court-trip-pro.base44.app/",
@@ -161,6 +166,7 @@ export const apps: AppEntry[] = [
     title: "Brain Break Roulette",
     description:
       "Spin for a quick, random brain break — a fun way to reset between tasks.",
+    creatorName: "Vishua S.",
     emoji: "🎡",
     type: "embedded-external",
     url: "https://refined-brain-break-blitz.base44.app",
@@ -172,6 +178,7 @@ export const apps: AppEntry[] = [
     title: "ICF Reflect",
     description:
       "A quiet space to check in with yourself and reflect on how you're doing.",
+    creatorName: "Seth C.",
     emoji: "🪞",
     type: "embedded-external",
     url: "https://elated-mind-reflect-core.base44.app",

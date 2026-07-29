@@ -65,15 +65,14 @@ export default function AppCard({
               ? "Placeholder"
               : isExternal
                 ? "External site"
-                : "In the hub"}
+                : app.creatorName
+                  ? `By ${app.creatorName}`
+                  : "In the hub"}
         </span>
       </div>
 
       <div className="flex-1">
         <h3 className="text-lg font-semibold text-ink">{app.title}</h3>
-        {app.creatorName && (
-          <p className="mt-0.5 text-xs text-muted">by {app.creatorName}</p>
-        )}
         <p className="mt-2 text-sm leading-relaxed text-muted">
           {app.description}
         </p>
