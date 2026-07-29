@@ -58,7 +58,7 @@ export interface AppEntry {
    * leave as "".
    */
   url: string;
-  /** Keywords used by the search/filter bar. */
+  /** Short topic labels shown as chips on the app's card. */
   tags: string[];
   /** ISO date string (YYYY-MM-DD) for when the app was added. */
   dateAdded: string;
@@ -193,10 +193,4 @@ export function getAppRoute(id: string): string | undefined {
   const app = getAppById(id);
   if (!app || app.comingSoon || app.type === "external") return undefined;
   return `/apps/${app.id}`;
-}
-
-export function getAllTags(): string[] {
-  const tagSet = new Set<string>();
-  apps.forEach((app) => app.tags.forEach((tag) => tagSet.add(tag)));
-  return Array.from(tagSet).sort();
 }

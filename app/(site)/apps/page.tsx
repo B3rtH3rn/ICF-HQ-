@@ -1,4 +1,4 @@
-import { apps, getAllTags } from "@/config/apps";
+import { apps } from "@/config/apps";
 import AppGrid from "@/components/AppGrid";
 
 export default function AppsPage() {
@@ -10,11 +10,11 @@ export default function AppsPage() {
         </h1>
         <p className="mt-2 max-w-2xl text-muted">
           Tools built by our young developers to support mental health and
-          wellbeing. Browse by topic on the left.
+          wellbeing. Browse by app below.
         </p>
       </header>
 
-      <AppGrid apps={apps} allTags={getAllTags()} />
+      <AppGrid apps={apps} />
     </div>
   );
 }
