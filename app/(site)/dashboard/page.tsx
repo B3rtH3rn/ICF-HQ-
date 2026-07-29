@@ -10,8 +10,10 @@ import ConfigurableAvatar from "@/components/dashboard/ConfigurableAvatar";
 import AvatarCustomizer from "@/components/dashboard/AvatarCustomizer";
 import AppBubble from "@/components/dashboard/AppBubble";
 import SidePanel from "@/components/dashboard/SidePanel";
-import { dashboardBubbles } from "@/lib/mockDashboard";
+import { getOrbitBubbles } from "@/lib/dashboardOrbit";
 import { defaultAvatarConfig, AvatarConfig } from "@/lib/avatarOptions";
+
+const orbitBubbles = getOrbitBubbles();
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -95,14 +97,34 @@ export default function DashboardPage() {
             <SidePanel />
           </aside>
 
-          {/* the floating stage */}
-          <div className="relative h-[500px] flex-1 sm:h-[560px]">
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <ConfigurableAvatar config={config} />
+          {/* the floating stage — orbiting bubbles on sm and up */}
+          <div className="relative flex-1">
+            <div className="relative hidden sm:block sm:h-[560px]">
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <ConfigurableAvatar config={config} />
+              </div>
+              {orbitBubbles.map((b, i) => (
+                <AppBubble key={b.id} bubble={b} delay={i * 0.7} />
+              ))}
             </div>
-            {dashboardBubbles.map((b, i) => (
-              <AppBubble key={b.id} bubble={b} delay={i * 0.7} />
-            ))}
+
+            {/* mobile fallback: avatar with a scrollable row of bubbles below,
+                rather than cramming 7 orbiting bubbles into a narrow stage */}
+            <div className="sm:hidden">
+              <div className="relative flex h-64 items-center justify-center">
+                <ConfigurableAvatar config={config} />
+              </div>
+              <div className="-mx-4 mt-4 flex gap-5 overflow-x-auto px-4 pb-3">
+                {orbitBubbles.map((b, i) => (
+                  <AppBubble
+                    key={b.id}
+                    bubble={b}
+                    delay={i * 0.7}
+                    layout="row"
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
