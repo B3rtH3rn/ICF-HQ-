@@ -4,7 +4,6 @@ import type { ComponentType } from "react";
 import { apps, getAppById } from "@/config/apps";
 import EmbeddedAppFrame from "@/components/EmbeddedAppFrame";
 import EmbeddedExternalAppFrame from "@/components/EmbeddedExternalAppFrame";
-import CollegeProcessTracker from "@/components/apps/CollegeProcessTracker";
 
 const INLINE_TYPES = ["embedded", "embedded-external", "native"];
 
@@ -12,10 +11,9 @@ const INLINE_TYPES = ["embedded", "embedded-external", "native"];
  * Registry for "native" apps (see config/apps.ts) — React components that
  * live in this project and render directly, no iframe. This is the one bit
  * of routing code a native app needs: add its component here, keyed by id.
+ * Empty for now — no native apps currently in the registry.
  */
-const NATIVE_COMPONENTS: Record<string, ComponentType> = {
-  "college-process": CollegeProcessTracker,
-};
+const NATIVE_COMPONENTS: Record<string, ComponentType> = {};
 
 export function generateStaticParams() {
   return apps

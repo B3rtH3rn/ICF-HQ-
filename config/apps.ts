@@ -97,19 +97,19 @@ export const apps: AppEntry[] = [
     dateAdded: "2026-06-01",
   },
   {
-    // Was a "coming soon" placeholder; replaced in place (same id, so the
-    // /apps/college-process URL doesn't change) now that the real app is
-    // built. Native React component, not iframed — see
-    // components/apps/CollegeProcessTracker.jsx and the NATIVE_COMPONENTS
-    // map in app/(site)/apps/[id]/page.tsx.
+    // Was a native in-project React component (its browser-side AI calls
+    // couldn't safely ship without a backend key-holding route). Switched
+    // in place (same id, so /apps/college-process doesn't change) to a
+    // live Base44-hosted version, embedded the same way as our other
+    // embedded-external apps (2026-07-29).
     id: "college-process",
     title: "College Process Tracker",
     description:
       "Track schools, essays, recommendations, scholarships, coach calls, campus visits, and more — all in one place.",
     creatorName: "Valerii S.",
     emoji: "🎓",
-    type: "native",
-    url: "",
+    type: "embedded-external",
+    url: "https://knowing-path-ready-pro.base44.app",
     tags: ["applications", "essays", "scholarships"],
     dateAdded: "2026-07-22",
   },
