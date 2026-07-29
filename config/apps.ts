@@ -97,18 +97,6 @@ export const apps: AppEntry[] = [
     dateAdded: "2026-06-01",
   },
   {
-    id: "summer-challenge",
-    title: "Summer Challenge",
-    description:
-      "A summer of small daily challenges to keep you growing, moving, and connected.",
-    emoji: "☀️",
-    type: "embedded",
-    url: "",
-    tags: [],
-    dateAdded: "2026-07-22",
-    comingSoon: true,
-  },
-  {
     // Was a "coming soon" placeholder; replaced in place (same id, so the
     // /apps/college-process URL doesn't change) now that the real app is
     // built. Native React component, not iframed — see
