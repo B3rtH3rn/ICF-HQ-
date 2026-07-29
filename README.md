@@ -39,7 +39,14 @@ accounts. One-time setup:
 4. In the Supabase dashboard, open the **SQL Editor** and run the migration
    in [`supabase/profiles.sql`](supabase/profiles.sql) to create the
    `profiles` table with Row Level Security enabled.
-5. Optional: under **Authentication → Providers → Email**, decide whether to
+5. In the same SQL Editor, run [`supabase/user_roles.sql`](supabase/user_roles.sql)
+   (after `profiles.sql`) to add the intern/admin role table. This is what
+   powers the `/admin` route. **There is no in-app way to become an
+   admin** — to promote someone, open the Supabase dashboard's **Table
+   Editor → user_roles**, find their row (matches their id in
+   **Authentication → Users**), and change `role` from `intern` to `admin`
+   directly.
+6. Optional: under **Authentication → Providers → Email**, decide whether to
    require email confirmation before sign-in. It's off by default in most
    new projects, meaning someone can sign up and use the dashboard
    immediately — confirmation enforcement is a deliberate follow-up
@@ -127,13 +134,15 @@ everything stays organized, but feel free to add a new one if nothing fits.
 app/                    pages (home, about, apps gallery, /apps/[id] viewer)
 app/login, app/signup, app/reset-password   auth pages (outside the main site chrome)
 app/(site)/dashboard    the signed-in, personalized dashboard
+app/(site)/admin        staff-only view, requires role="admin" (see Auth setup)
 components/             reusable UI pieces (header, footer, app cards, grid)
 components/dashboard/   the avatar, bubbles, side panel, customizer
 config/apps.ts           <-- the app registry — the only file you need to edit
 public/mini-apps/<id>/        embedded apps' files live here
 lib/supabase/            Supabase client helpers (browser + server)
-middleware.ts            refreshes the session + protects /dashboard
+middleware.ts            refreshes the session + protects /dashboard and /admin
 supabase/profiles.sql    the one-time database migration (see Auth setup)
+supabase/user_roles.sql  the intern/admin role table + RLS (see Auth setup)
 ```
 
 ## Deployment

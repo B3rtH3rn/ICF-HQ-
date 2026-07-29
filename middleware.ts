@@ -3,9 +3,12 @@ import { NextResponse, type NextRequest } from "next/server";
 
 /**
  * Runs on every request (except static assets, see matcher below).
- * Two jobs:
+ * Three jobs:
  *  1. Refresh the Supabase session cookie so it doesn't silently expire.
  *  2. Redirect signed-out visitors away from /dashboard before it renders.
+ *  3. Redirect anyone who isn't role="admin" away from /admin before it
+ *     renders. The role lookup only runs for /admin requests — every other
+ *     route still costs just the one getUser() call, same as before.
  */
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -35,11 +38,41 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
+  const pathname = request.nextUrl.pathname;
+
+  if (!user && pathname.startsWith("/dashboard")) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("redirectedFrom", request.nextUrl.pathname);
     return NextResponse.redirect(url);
+  }
+
+  const isAdminPath =
+    pathname === "/admin" || pathname.startsWith("/admin/");
+
+  if (isAdminPath) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.set("redirectedFrom", request.nextUrl.pathname);
+      return NextResponse.redirect(url);
+    }
+
+    // Only reached for /admin requests — every other route never pays for
+    // this extra round-trip. RLS ("Users can view their own role") lets
+    // this succeed with the anon key; a missing or non-admin row both read
+    // as "not admin" below.
+    const { data: roleRow } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (roleRow?.role !== "admin") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
   }
 
   return response;

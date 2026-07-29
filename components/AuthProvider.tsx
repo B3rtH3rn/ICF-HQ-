@@ -18,10 +18,16 @@ export type Profile = {
   avatar_symbols: string[];
 };
 
+export type Role = "intern" | "admin";
+
 type AuthContextValue = {
   user: User | null;
   profile: Profile | null;
-  /** True until the initial session check completes. */
+  /** Resolves to "intern" once loaded — never self-assignable from the app. */
+  role: Role | null;
+  /** Convenience — true only once `role` has resolved to "admin". */
+  isAdmin: boolean;
+  /** True until the initial session + profile + role check completes. */
   loading: boolean;
   refreshProfile: () => Promise<void>;
 };
@@ -29,6 +35,8 @@ type AuthContextValue = {
 const AuthContext = createContext<AuthContextValue>({
   user: null,
   profile: null,
+  role: null,
+  isAdmin: false,
   loading: true,
   refreshProfile: async () => {},
 });
@@ -37,6 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [supabase] = useState(() => createClient());
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [role, setRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState(true);
 
   const loadProfile = useCallback(
@@ -51,22 +60,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [supabase]
   );
 
+  const loadRole = useCallback(
+    async (userId: string) => {
+      // maybeSingle, not single — a missing row (e.g. a pre-migration user
+      // who hasn't been backfilled yet) should read as "intern", not throw.
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId)
+        .maybeSingle();
+      setRole((data?.role as Role) ?? "intern");
+    },
+    [supabase]
+  );
+
   useEffect(() => {
     let active = true;
 
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
       if (!active) return;
       setUser(user);
-      if (user) loadProfile(user.id);
-      setLoading(false);
+      if (user) {
+        // Parallel fetch, single loading gate — both must resolve before
+        // the rest of the app treats auth state as "settled".
+        await Promise.all([loadProfile(user.id), loadRole(user.id)]);
+      }
+      if (active) setLoading(false);
     });
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       if (session?.user) {
         loadProfile(session.user.id);
+        loadRole(session.user.id);
       } else {
         setProfile(null);
+        setRole(null);
       }
     });
 
@@ -74,14 +103,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       active = false;
       sub.subscription.unsubscribe();
     };
-  }, [supabase, loadProfile]);
+  }, [supabase, loadProfile, loadRole]);
 
   const refreshProfile = useCallback(async () => {
     if (user) await loadProfile(user.id);
   }, [user, loadProfile]);
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, refreshProfile }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        profile,
+        role,
+        isAdmin: role === "admin",
+        loading,
+        refreshProfile,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -17,7 +17,7 @@ const NAV = [
 
 export default function Header() {
   const pathname = usePathname();
-  const { user, profile } = useAuth();
+  const { user, profile, isAdmin } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -31,6 +31,7 @@ export default function Header() {
   };
 
   const displayName = profile?.display_name || user?.email?.split("@")[0] || "";
+  const navItems = isAdmin ? [...NAV, { href: "/admin", label: "Admin" }] : NAV;
 
   // Close on click-outside / Escape
   useEffect(() => {
@@ -155,7 +156,7 @@ export default function Header() {
 
         {/* Main menu */}
         <nav className="flex flex-shrink-0 items-center gap-1 rounded-full border border-hairline bg-surface/60 p-1 text-sm font-semibold">
-          {NAV.map((item) => {
+          {navItems.map((item) => {
             const active =
               item.href === "/"
                 ? pathname === "/"
