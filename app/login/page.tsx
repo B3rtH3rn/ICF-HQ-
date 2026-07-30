@@ -7,6 +7,7 @@ import ParticleField from "@/components/ParticleField";
 import Wordmark from "@/components/Wordmark";
 import { createClient } from "@/lib/supabase/client";
 import { friendlyAuthError } from "@/lib/authErrors";
+import { recordLogin } from "@/lib/activityTracking";
 
 export default function LoginPage() {
   return (
@@ -34,7 +35,7 @@ function LoginForm() {
     setSubmitting(true);
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -45,6 +46,8 @@ function LoginForm() {
       setError(friendlyAuthError(error.message));
       return;
     }
+
+    recordLogin(data.user.id);
 
     router.push(redirectedFrom);
     router.refresh();

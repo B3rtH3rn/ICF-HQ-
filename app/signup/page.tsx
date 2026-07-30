@@ -7,6 +7,7 @@ import ParticleField from "@/components/ParticleField";
 import Wordmark from "@/components/Wordmark";
 import { createClient } from "@/lib/supabase/client";
 import { friendlyAuthError } from "@/lib/authErrors";
+import { recordLogin } from "@/lib/activityTracking";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -64,6 +65,8 @@ export default function SignupPage() {
       );
       return;
     }
+
+    recordLogin(data.session.user.id);
 
     router.push("/dashboard");
     router.refresh();

@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
+import InternEngagementTable from "@/components/admin/InternEngagementTable";
+import AppProgressAvailability from "@/components/admin/AppProgressAvailability";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -37,9 +39,14 @@ export default function AdminPage() {
       <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
         Admin dashboard
       </h1>
-      <p className="mx-auto mt-2 max-w-md text-sm text-muted">
-        Placeholder — intern engagement and progress tracking is coming next.
+      <p className="mt-2 max-w-2xl text-sm text-muted">
+        A quick look at how interns are using the hub.
       </p>
+
+      <div className="mt-8 space-y-8">
+        <InternEngagementTable />
+        <AppProgressAvailability />
+      </div>
     </div>
   );
 }

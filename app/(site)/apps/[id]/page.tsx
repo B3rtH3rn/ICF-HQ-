@@ -4,6 +4,7 @@ import type { ComponentType } from "react";
 import { apps, getAppById } from "@/config/apps";
 import EmbeddedAppFrame from "@/components/EmbeddedAppFrame";
 import EmbeddedExternalAppFrame from "@/components/EmbeddedExternalAppFrame";
+import AppOpenTracker from "@/components/AppOpenTracker";
 
 const INLINE_TYPES = ["embedded", "embedded-external", "native"];
 
@@ -83,6 +84,7 @@ export default function AppPage({ params }: { params: { id: string } }) {
       ) : (
         <EmbeddedAppFrame src={app.url} title={app.title} />
       )}
+      <AppOpenTracker appId={app.id} />
     </div>
   );
 }
