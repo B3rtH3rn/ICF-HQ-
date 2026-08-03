@@ -36,7 +36,7 @@ export default function AppPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col">
+    <div className="flex h-[calc(100vh-4.5rem)] flex-col sm:h-[calc(100vh-4rem)]">
       <div className="flex items-center justify-between border-b border-hairline bg-surface px-4 py-2.5 sm:px-6">
         <div>
           <h1 className="text-sm font-semibold text-ink">{app.title}</h1>

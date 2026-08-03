@@ -46,7 +46,7 @@ export default function AppGrid({ apps }: { apps: AppEntry[] }) {
                 key={tab.label}
                 onClick={() => setActiveId(tab.value)}
                 aria-current={isActive ? "true" : undefined}
-                className={`rounded-xl px-4 py-2 text-left text-sm font-medium transition-colors lg:w-full ${
+                className={`rounded-xl px-4 py-3 text-left text-sm font-medium transition-colors lg:w-full lg:py-2 ${
                   isActive
                     ? "bg-accent2 text-white shadow-soft"
                     : "text-muted hover:bg-surface hover:text-ink"

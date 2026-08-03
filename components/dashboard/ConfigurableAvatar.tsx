@@ -1,3 +1,4 @@
+import { useId } from "react";
 import {
   AvatarConfig,
   EnergyStyle,
@@ -144,8 +145,17 @@ export default function ConfigurableAvatar({
   config: AvatarConfig;
   size?: number;
 }) {
+  // Unique per mounted instance — the dashboard renders this component
+  // twice at once (orbit layout + mobile fallback, one hidden via CSS at
+  // any given breakpoint). A hardcoded gradient id would collide, and
+  // since url(#id) can resolve to a definition inside a display:none
+  // subtree (which fails to paint), the VISIBLE instance's outline could
+  // end up invisible depending on DOM order — exactly what happened here.
+  // useId() includes colons (e.g. ":r0:"), which can break url(#id)
+  // fragment resolution in SVG — strip them to keep the id plain.
+  const gradientId = `silh-grad-${useId().replace(/:/g, "")}`;
   const color = config.color;
-  const strokeColor = color ?? "url(#silh-grad)";
+  const strokeColor = color ?? `url(#${gradientId})`;
   const glowCss = color ? `${color}80` : "rgb(var(--accent) / 0.5)";
   const haloColor = color ?? "rgb(var(--glow))";
   const energyColor = color ?? "rgb(var(--accent))";
@@ -153,11 +163,20 @@ export default function ConfigurableAvatar({
 
   return (
     <div className="relative flex items-center justify-center">
-      {/* halo */}
+      {/* halo — the outer wrapper holds the intended baseline opacity;
+          animate-pulse-glow's own opacity keyframes (0.55-1) run on the
+          inner element instead of overriding this one, so the halo stays
+          a soft ambient wash instead of a solid, too-strong wash that
+          blends into the figure's similarly-toned outline. */}
       <div
-        className="pointer-events-none absolute h-72 w-72 animate-pulse-glow rounded-full blur-3xl"
-        style={{ backgroundColor: haloColor, opacity: 0.2 }}
-      />
+        className="pointer-events-none absolute h-72 w-72 rounded-full blur-3xl"
+        style={{ opacity: 0.2 }}
+      >
+        <div
+          className="h-full w-full animate-pulse-glow rounded-full"
+          style={{ backgroundColor: haloColor }}
+        />
+      </div>
 
       <EnergyLayer energy={config.energy} color={energyColor} />
       <SymbolOrbit symbols={config.symbols} />
@@ -172,7 +191,7 @@ export default function ConfigurableAvatar({
           style={{ filter: `drop-shadow(0 0 18px ${glowCss})` }}
         >
           <defs>
-            <linearGradient id="silh-grad" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="rgb(var(--glow))" />
               <stop offset="100%" stopColor="rgb(var(--accent-2))" />
             </linearGradient>
