@@ -60,6 +60,15 @@ export interface AppEntry {
   url: string;
   /** Short topic labels shown as chips on the app's card. */
   tags: string[];
+  /**
+   * Optional. Groups an app into a themed dashboard section (e.g.
+   * "productivity") — distinct from `tags` above, which are per-app topic
+   * chips shown on the apps-page cards, not a grouping mechanism. Add a new
+   * category here (any string) and a matching section will need to be
+   * added to the dashboard to actually render it — see
+   * lib/dashboardCategories.ts.
+   */
+  category?: string;
   /** ISO date string (YYYY-MM-DD) for when the app was added. */
   dateAdded: string;
   /**
@@ -95,6 +104,7 @@ export const apps: AppEntry[] = [
     url: "https://inspire-daily.onrender.com/",
     tags: ["daily check-in", "reflection"],
     dateAdded: "2026-06-01",
+    category: "productivity",
   },
   {
     // Was a native in-project React component (its browser-side AI calls
@@ -112,6 +122,7 @@ export const apps: AppEntry[] = [
     url: "https://knowing-path-ready-pro.base44.app",
     tags: ["applications", "essays", "scholarships"],
     dateAdded: "2026-07-22",
+    category: "productivity",
   },
   {
     id: "tournament-tracker",
@@ -124,6 +135,7 @@ export const apps: AppEntry[] = [
     url: "https://tournamenttracker.base44.app/",
     tags: ["tournaments"],
     dateAdded: "2026-07-24",
+    category: "productivity",
   },
   {
     id: "office-clean-up",
@@ -172,11 +184,26 @@ export const apps: AppEntry[] = [
     url: "https://elated-mind-reflect-core.base44.app",
     tags: ["reflection", "mental health"],
     dateAdded: "2026-07-29",
+    category: "productivity",
   },
 ];
 
 export function getAppById(id: string): AppEntry | undefined {
   return apps.find((app) => app.id === id);
+}
+
+/**
+ * Every app tagged with the given `category` (see AppEntry.category above),
+ * sorted alphabetically by title — used to generate themed dashboard
+ * sections (e.g. "Productivity") automatically as apps are added/removed
+ * from the registry, rather than hand-maintaining a section's app list.
+ */
+export function getAppsByCategory(category: string): AppEntry[] {
+  return apps
+    .filter((app) => app.category === category)
+    .sort((a, b) =>
+      a.title.trim().toLowerCase().localeCompare(b.title.trim().toLowerCase())
+    );
 }
 
 /**

@@ -10,6 +10,7 @@ import ConfigurableAvatar from "@/components/dashboard/ConfigurableAvatar";
 import AvatarCustomizer from "@/components/dashboard/AvatarCustomizer";
 import AppBubble from "@/components/dashboard/AppBubble";
 import SidePanel from "@/components/dashboard/SidePanel";
+import CategoryGroup from "@/components/dashboard/CategoryGroup";
 import { getOrbitBubbles } from "@/lib/dashboardOrbit";
 import { defaultAvatarConfig, AvatarConfig } from "@/lib/avatarOptions";
 
@@ -127,6 +128,8 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+
+        <CategoryGroup category="productivity" title="Productivity" />
 
         <div className="mt-8 text-center">
           <Link
