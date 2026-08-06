@@ -11,6 +11,7 @@ import AvatarCustomizer from "@/components/dashboard/AvatarCustomizer";
 import AppBubble from "@/components/dashboard/AppBubble";
 import SidePanel from "@/components/dashboard/SidePanel";
 import CategoryGroup from "@/components/dashboard/CategoryGroup";
+import TodoWidget from "@/components/dashboard/TodoWidget";
 import { getOrbitBubbles } from "@/lib/dashboardOrbit";
 import { defaultAvatarConfig, AvatarConfig } from "@/lib/avatarOptions";
 
@@ -129,7 +130,9 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <CategoryGroup category="productivity" title="Productivity" />
+        <CategoryGroup category="productivity" title="Productivity">
+          <TodoWidget />
+        </CategoryGroup>
 
         <div className="mt-8 text-center">
           <Link
