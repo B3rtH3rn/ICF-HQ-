@@ -23,6 +23,20 @@ export default function AppGrid({ apps }: { apps: AppEntry[] }) {
     [sorted, activeId]
   );
 
+  // Pinned apps float to the top of the grid, ahead of the alphabetical
+  // order — sorted alphabetically among themselves, with everything else
+  // following in the existing A-Z order below them. `filtered` is already
+  // alphabetical (it's derived from `sorted`), so splitting into
+  // pinned/unpinned and concatenating preserves that order within each
+  // group. Only matters for the "All Apps" view — a single-app filter is
+  // already just one card, so pin order is a no-op there.
+  const displayed = useMemo(() => {
+    if (activeId) return filtered;
+    const pinned = filtered.filter((app) => app.pinned);
+    const rest = filtered.filter((app) => !app.pinned);
+    return [...pinned, ...rest];
+  }, [filtered, activeId]);
+
   const activeApp = activeId
     ? sorted.find((app) => app.id === activeId)
     : undefined;
@@ -66,12 +80,12 @@ export default function AppGrid({ apps }: { apps: AppEntry[] }) {
             {activeApp ? activeApp.title : "Explore the apps"}
           </h3>
           <p className="mt-1 text-sm text-muted">
-            {filtered.length} {filtered.length === 1 ? "app" : "apps"} to explore
+            {displayed.length} {displayed.length === 1 ? "app" : "apps"} to explore
           </p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          {filtered.map((app, i) => (
+          {displayed.map((app, i) => (
             <AppCard key={app.id} app={app} index={i} />
           ))}
         </div>

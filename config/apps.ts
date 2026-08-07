@@ -85,6 +85,15 @@ export interface AppEntry {
    * and the app page, but the app stays clickable/viewable.
    */
   placeholder?: boolean;
+  /**
+   * Optional. Set true to float this app to the top of the apps-page grid,
+   * ahead of the normal alphabetical ordering. If more than one app is
+   * pinned, pinned apps are sorted alphabetically among themselves, then
+   * everything else follows alphabetically as usual. Only affects the
+   * default "All Apps" browse view — irrelevant when a single app filter
+   * is selected. Unpin by removing this field or setting it to false.
+   */
+  pinned?: boolean;
 }
 
 export const apps: AppEntry[] = [
@@ -105,6 +114,7 @@ export const apps: AppEntry[] = [
     tags: ["daily check-in", "reflection"],
     dateAdded: "2026-06-01",
     category: "productivity",
+    pinned: true,
   },
   {
     // Was a native in-project React component (its browser-side AI calls
